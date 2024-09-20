@@ -2,7 +2,6 @@ package com.br.Agro_Mapping.service;
 
 import com.br.Agro_Mapping.model.Usuario;
 import com.br.Agro_Mapping.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.UUID;
 @Service
 public class UsuarioService {
 
-    @Autowired
+
     private UsuarioRepository usuarioRepository;
 
     public Usuario salvarUsuario(Usuario usuario) {
