@@ -19,7 +19,8 @@ import java.util.UUID;
 public class Produto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // Ajustado para UUID
+    @GeneratedValue()
+    @Column(name = "id_produto")
     private UUID idProduto;
 
     @Column(name = "nome", nullable = false)
@@ -42,4 +43,8 @@ public class Produto {
     @NotBlank(message = "Digite uma descrição para o produto")
     @Size(min = 10, max = 500, message = "A descrição deve ter pelo menos 10 caracteres e no máximo 500 caracteres")
     private String descricao;
+
+    @Column(name = "imagem", nullable = false)
+    @NotBlank(message = "Adicione uma imagem a o produto")
+    private String imagem;
 }
