@@ -56,17 +56,22 @@ public class UsuarioService implements UsuarioServiceInterface {
     @Override
     public UsuarioResponseDTO atualizarUsuario(UUID id, UsuarioRequestDTO usuarioRequestDTO) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
-        if (usuarioOptional.isPresent()) {
-            Usuario usuario = usuarioOptional.get();
-            usuario.setNome(usuarioRequestDTO.nome());
-            usuario.setEmail(usuarioRequestDTO.email());
-            usuario.setSenha(usuarioRequestDTO.senha());
-            usuario.setDataDeNascimento(usuarioRequestDTO.dataNascimento());
+        Usuario usuario = usuarioOptional.orElseThrow(() -> new RuntimeException("Usuário não encontrado com o ID: " + id));
 
-            Usuario usuarioAtualizado = usuarioRepository.save(usuario);
-            return new UsuarioResponseDTO(usuarioAtualizado.getId(), usuarioAtualizado.getNome(), usuarioAtualizado.getEmail());
-        } else {
-            return null;
-        }
+// Atualizando os campos do usuário com os valores do DTO
+        usuario.setNome(usuarioRequestDTO.nome());
+        usuario.setEmail(usuarioRequestDTO.email());
+        usuario.setSenha(usuarioRequestDTO.senha());
+        usuario.setDataDeNascimento(usuarioRequestDTO.dataNascimento());
+
+// Salvando as alterações no banco de dados
+        Usuario usuarioAtualizado = usuarioRepository.save(usuario);
+
+// Retornando o DTO atualizado
+        return new UsuarioResponseDTO(
+                usuarioAtualizado.getId(),
+                usuarioAtualizado.getNome(),
+                usuarioAtualizado.getEmail());
+
     }
 }

@@ -19,7 +19,7 @@ import java.util.UUID;
 public class Produto {
 
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_produto")
     private UUID idProduto;
 
@@ -47,4 +47,18 @@ public class Produto {
     @Column(name = "imagem", nullable = false)
     @NotBlank(message = "Adicione uma imagem a o produto")
     private String imagem;
+
+    private Produto(String nome, String categoria, Integer quantidadeDisponivel, Double preco, String descricao, String imagem) {
+        this.nome = nome;
+        this.categoria = categoria;
+        this.quantidadeDisponivel = quantidadeDisponivel;
+        this.preco = preco;
+        this.descricao = descricao;
+        this.imagem = imagem;
+    }
+
+
+    public static Produto newProduto(String nome, String categoria, Integer quantidadeDisponivel, Double preco, String descricao, String imagem) {
+        return new Produto(nome, categoria, quantidadeDisponivel, preco, descricao, imagem);
+    }
 }
