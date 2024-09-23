@@ -5,7 +5,6 @@ import com.br.Agro_Mapping.dto.responses.UsuarioResponseDTO;
 import com.br.Agro_Mapping.model.Usuario;
 import com.br.Agro_Mapping.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,17 +16,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UsuarioService implements UsuarioServiceInterface {
 
- 
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
     @Override
     public UsuarioResponseDTO criarUsuario(UsuarioRequestDTO usuarioRequestDTO) {
-        Usuario usuario = new Usuario();
-        usuario.setId(UUID.randomUUID());
-        usuario.setNome(usuarioRequestDTO.nome());
-        usuario.setEmail(usuarioRequestDTO.email());
-        usuario.setSenha(usuarioRequestDTO.senha());
-        usuario.setDataDeNascimento(usuarioRequestDTO.dataNascimento());
+        Usuario usuario = Usuario.newUsuario(
+                usuarioRequestDTO.nome(),
+                usuarioRequestDTO.email(),
+                usuarioRequestDTO.senha(),
+                usuarioRequestDTO.dataNascimento()
+        );
 
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
 
@@ -55,23 +53,20 @@ public class UsuarioService implements UsuarioServiceInterface {
 
     @Override
     public UsuarioResponseDTO atualizarUsuario(UUID id, UsuarioRequestDTO usuarioRequestDTO) {
-        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
-        Usuario usuario = usuarioOptional.orElseThrow(() -> new RuntimeException("Usuário não encontrado com o ID: " + id));
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o ID: " + id));
 
-// Atualizando os campos do usuário com os valores do DTO
         usuario.setNome(usuarioRequestDTO.nome());
         usuario.setEmail(usuarioRequestDTO.email());
         usuario.setSenha(usuarioRequestDTO.senha());
         usuario.setDataDeNascimento(usuarioRequestDTO.dataNascimento());
 
-// Salvando as alterações no banco de dados
         Usuario usuarioAtualizado = usuarioRepository.save(usuario);
 
-// Retornando o DTO atualizado
         return new UsuarioResponseDTO(
                 usuarioAtualizado.getId(),
                 usuarioAtualizado.getNome(),
-                usuarioAtualizado.getEmail());
-
+                usuarioAtualizado.getEmail()
+        );
     }
 }

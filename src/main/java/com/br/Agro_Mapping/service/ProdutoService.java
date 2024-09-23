@@ -6,21 +6,39 @@ import com.br.Agro_Mapping.model.Produto;
 import com.br.Agro_Mapping.repository.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ProdutoService  implements ProdutoServiceInterface{
+public class ProdutoService implements ProdutoServiceInterface {
 
     private final ProdutoRepository produtoRepository;
 
     @Override
-    public void criarProduto(ProdutoRequestDTO produtoRequestDTO) {
-        Produto produto =  Produto.newProduto(produtoRequestDTO.nome(),
-                produtoRequestDTO.categoria(), produtoRequestDTO.quantidadeDisponivel(),
-                 produtoRequestDTO.preco(), produtoRequestDTO.descricao(), produtoRequestDTO.imagem());
+    public ProdutoResponseDTO criarProduto(ProdutoRequestDTO produtoRequestDTO) {
+        Produto produto = Produto.newProduto(
+                produtoRequestDTO.nome(),
+                produtoRequestDTO.categoria(),
+                produtoRequestDTO.quantidadeDisponivel(),
+                produtoRequestDTO.preco(),
+                produtoRequestDTO.descricao(),
+                produtoRequestDTO.imagem()
+        );
+
+        Produto produtoSalvo = produtoRepository.save(produto);
+
+        return new ProdutoResponseDTO(
+                produtoSalvo.getIdProduto(),
+                produtoSalvo.getNome(),
+                produtoSalvo.getCategoria(),
+                produtoSalvo.getPreco(),
+                produtoSalvo.getDescricao(),
+                produtoSalvo.getQuantidadeDisponivel(),
+                produtoSalvo.getImagem()
+        );
     }
 
     @Override
@@ -38,20 +56,15 @@ public class ProdutoService  implements ProdutoServiceInterface{
                 .collect(Collectors.toList());
     }
 
-
-
     @Override
     public void deletarProduto(UUID id) {
         produtoRepository.deleteById(id);
-
     }
-
 
     @Override
     public void atualizarProduto(UUID id, ProdutoRequestDTO produtoRequestDTO) {
         Produto produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado com o ID: " + id));
-
 
         produto.setNome(produtoRequestDTO.nome());
         produto.setCategoria(produtoRequestDTO.categoria());
@@ -60,9 +73,6 @@ public class ProdutoService  implements ProdutoServiceInterface{
         produto.setQuantidadeDisponivel(produtoRequestDTO.quantidadeDisponivel());
         produto.setImagem(produtoRequestDTO.imagem());
 
-
         produtoRepository.save(produto);
     }
-
-
 }

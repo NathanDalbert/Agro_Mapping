@@ -14,7 +14,7 @@ import java.util.UUID;
 @ToString
 @Entity(name = "usuario")
 @Table(name = "usuario")
-public class Usuario {
+public class Usuario  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -37,4 +37,16 @@ public class Usuario {
     @Column(name = "data_de_nascimento", nullable = false)
     @NotNull(message = "O campo data de nascimento é obrigatório")
     private LocalDate dataDeNascimento;
+
+    private Usuario(String nome, String email, String senha, LocalDate dataDeNascimento) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.dataDeNascimento = dataDeNascimento;
+    }
+
+    public static Usuario newUsuario(String nome, String email, String senha, LocalDate dataDeNascimento) {
+        return new Usuario(nome, email, senha, dataDeNascimento);
+    }
+
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ProdutoServiceInterface {
-    void criarProduto(ProdutoRequestDTO produtoRequestDTO);
+    ProdutoResponseDTO criarProduto(ProdutoRequestDTO produtoRequestDTO);
     List<ProdutoResponseDTO> listarProdutos();
     void deletarProduto(UUID id);
     void atualizarProduto(UUID id, ProdutoRequestDTO produtoRequestDTO);
