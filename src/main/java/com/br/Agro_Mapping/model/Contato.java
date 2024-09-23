@@ -23,7 +23,7 @@ public class Contato {
     @Column(name = "id_contato", nullable = false)
     private UUID id;
     @Column(name = "email", nullable = false)
-    @NotBlank(message = "O campo email é obrigatório")
+    @NotBlank(message = "O campo telefone é obrigatório")
     private String telefone;
 
 }

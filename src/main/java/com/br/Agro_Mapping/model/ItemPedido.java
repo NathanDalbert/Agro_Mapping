@@ -27,5 +27,13 @@ public class ItemPedido {
     @Column(name = "quantidade", nullable = false)
     private Integer quantidade;
 
+    private ItemPedido(double precoUnitario, Integer quantidade) {
+        this.precoUnitario = precoUnitario;
+        this.quantidade = quantidade;
+    }
+    public static ItemPedido newItemPedido(double precoUnitario, Integer quantidade) {
+        return new ItemPedido(precoUnitario, quantidade);
+    }
+
 
 }

@@ -53,8 +53,9 @@ public class ProdutoService implements ProdutoServiceInterface {
                         produto.getDescricao(),
                         produto.getQuantidadeDisponivel(),
                         produto.getImagem()))
-                .collect(Collectors.toList());
+                .toList();
     }
+
 
     @Override
     public void deletarProduto(UUID id) {
