@@ -26,19 +26,20 @@ public class Feira {
     @NotBlank(message = "O nome da feira  é obrigatório")
     private String nome;
 
-    private String Localizacao;
+
+    private String localizacao;
 
     @Column(name = "data_funcionamento", nullable = false)
     @NotNull(message = "A data de funcionamento é obrigatória")
     private LocalDate dataFuncionamento;
 
-    private Feira(String nome, String Localizacao, LocalDate dataFuncionamento) {
+    private Feira(String nome, String localizacao, LocalDate dataFuncionamento) {
         this.nome = nome;
-        this.Localizacao = Localizacao;
+        this.localizacao = localizacao;
         this.dataFuncionamento = dataFuncionamento;
     }
 
-    public static Feira newFeira(String nome, String Localizacao, LocalDate dataFuncionamento) {
-        return new Feira(nome, Localizacao, dataFuncionamento);
+    public static Feira newFeira(String nome, String localizacao, LocalDate dataFuncionamento) {
+        return new Feira(nome, localizacao, dataFuncionamento);
     }
 }
