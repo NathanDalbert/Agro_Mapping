@@ -28,7 +28,7 @@ CREATE TABLE item_pedido (
     id_item_pedido UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     preco_unitario NUMERIC(10, 2) NOT NULL,
     quantidade INTEGER NOT NULL
-);[
+);
 CREATE TABLE feira (
     id_feira UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     nome VARCHAR(255) NOT NULL,
