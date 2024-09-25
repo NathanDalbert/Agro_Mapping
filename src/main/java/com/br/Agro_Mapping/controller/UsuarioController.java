@@ -50,4 +50,9 @@ public class UsuarioController {
         usuarioService.deletarUsuario(id);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/buscarpornome")
+    public ResponseEntity<List<UsuarioResponseDTO>> buscarUsuarioPorNome(@RequestParam String nome) {
+        List<UsuarioResponseDTO> usuarios = usuarioService.findByName(nome);
+        return ResponseEntity.ok(usuarios);
+    }
 }

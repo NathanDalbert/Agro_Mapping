@@ -29,21 +29,21 @@ public class UsuarioService implements UsuarioServiceInterface {
 
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
 
-        return new UsuarioResponseDTO(usuarioSalvo.getId(), usuarioSalvo.getNome(), usuarioSalvo.getEmail());
+        return new UsuarioResponseDTO(usuarioSalvo.getId(), usuarioSalvo.getNome(), usuarioSalvo.getEmail(), usuario.getDataDeNascimento());
     }
 
     @Override
     public List<UsuarioResponseDTO> listarUsuarios() {
         List<Usuario> usuarios = usuarioRepository.findAll();
         return usuarios.stream()
-                .map(usuario -> new UsuarioResponseDTO(usuario.getId(), usuario.getNome(), usuario.getEmail()))
+                .map(usuario -> new UsuarioResponseDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getDataDeNascimento()))
                 .collect(Collectors.toList());
     }
 
     @Override
     public Optional<UsuarioResponseDTO> buscarUsuarioPorId(UUID id) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
-        return usuarioOptional.map(usuario -> new UsuarioResponseDTO(usuario.getId(), usuario.getNome(), usuario.getEmail()));
+        return usuarioOptional.map(usuario -> new UsuarioResponseDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getDataDeNascimento()));
     }
 
     @Override
@@ -66,7 +66,20 @@ public class UsuarioService implements UsuarioServiceInterface {
         return new UsuarioResponseDTO(
                 usuarioAtualizado.getId(),
                 usuarioAtualizado.getNome(),
-                usuarioAtualizado.getEmail()
-        );
+                usuarioAtualizado.getEmail(),
+                usuario.getDataDeNascimento());
     }
+
+    @Override
+    public List<UsuarioResponseDTO> findByName(String nome) {
+        List<Usuario> usuarios = usuarioRepository.findByNome(nome);
+        return usuarios.stream()
+                .map(usuario -> new UsuarioResponseDTO(
+                        usuario.getId(),
+                        usuario.getNome(),
+                        usuario.getEmail(),
+                        usuario.getDataDeNascimento()))
+                .collect(Collectors.toList());
+    }
+
 }
