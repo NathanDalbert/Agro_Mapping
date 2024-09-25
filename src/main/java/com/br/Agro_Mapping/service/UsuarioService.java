@@ -78,8 +78,8 @@ public class UsuarioService implements UsuarioServiceInterface {
                         usuario.getId(),
                         usuario.getNome(),
                         usuario.getEmail(),
-                        usuario.getDataDeNascimento()))
-                .collect(Collectors.toList());
+                        usuario.getDataDeNascimento())).
+                 toList();
     }
 
 }

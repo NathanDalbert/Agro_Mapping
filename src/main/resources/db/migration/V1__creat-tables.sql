@@ -7,7 +7,7 @@ CREATE TABLE produto (
     quantidade_disponivel INT NOT NULL,
     preco DECIMAL(10, 2) NOT NULL,
     descricao VARCHAR(500) NOT NULL,
-    imagem VARCHAR(255) NOT NULL
+    imagem VARCHAR(500) NOT NULL
 );
 
 CREATE TABLE usuario (

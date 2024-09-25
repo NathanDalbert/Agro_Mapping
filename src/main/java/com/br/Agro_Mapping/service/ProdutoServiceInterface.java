@@ -9,6 +9,7 @@ public interface ProdutoServiceInterface {
     ProdutoResponseDTO criarProduto(ProdutoRequestDTO produtoRequestDTO);
     List<ProdutoResponseDTO> listarProdutos();
     void deletarProduto(UUID id);
-    void atualizarProduto(UUID id, ProdutoRequestDTO produtoRequestDTO);
+    ProdutoResponseDTO atualizarProduto(UUID id, ProdutoRequestDTO produtoRequestDTO);
+    List<ProdutoResponseDTO> findByName(String name);
 
 }

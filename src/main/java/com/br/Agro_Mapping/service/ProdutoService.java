@@ -5,11 +5,12 @@ import com.br.Agro_Mapping.dto.responses.ProdutoResponseDTO;
 import com.br.Agro_Mapping.model.Produto;
 import com.br.Agro_Mapping.repository.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -63,7 +64,7 @@ public class ProdutoService implements ProdutoServiceInterface {
     }
 
     @Override
-    public void atualizarProduto(UUID id, ProdutoRequestDTO produtoRequestDTO) {
+    public ProdutoResponseDTO atualizarProduto(UUID id, ProdutoRequestDTO produtoRequestDTO) {
         Produto produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado com o ID: " + id));
 
@@ -74,6 +75,22 @@ public class ProdutoService implements ProdutoServiceInterface {
         produto.setQuantidadeDisponivel(produtoRequestDTO.quantidadeDisponivel());
         produto.setImagem(produtoRequestDTO.imagem());
 
-        produtoRepository.save(produto);
+        Produto produtoAtualizado = produtoRepository.save(produto);
+         return new ProdutoResponseDTO(
+                produtoAtualizado.getIdProduto(),
+                produtoAtualizado.getNome(),
+                produtoAtualizado.getCategoria(),
+                produtoAtualizado.getPreco(),
+                produtoAtualizado.getDescricao(),
+                produtoAtualizado.getQuantidadeDisponivel(),
+                produtoAtualizado.getImagem());
+
     }
+
+    @Override
+    public List<ProdutoResponseDTO> findByName(String name) {
+        List<Produto> produtos = produtoRepository.findByNome(name);
+        return (List<ProdutoResponseDTO>) ResponseEntity.ok(produtos);
+    }
+
 }
