@@ -24,7 +24,7 @@ public class ProdutoController {
         return ResponseEntity.ok(produtoResponseDTO);
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<ProdutoResponseDTO>> listarProdutos() {
         List<ProdutoResponseDTO> produtos = produtoService.listarProdutos();
         return ResponseEntity.ok(produtos);
@@ -50,4 +50,6 @@ public class ProdutoController {
         produtoService.deletarProduto(id);
         return ResponseEntity.noContent().build();
     }
+
+
 }
