@@ -14,5 +14,5 @@ public interface UsuarioServiceInterface {
     Optional<UsuarioResponseDTO> buscarUsuarioPorId(UUID id);
     void deletarUsuario(UUID id);
     UsuarioResponseDTO atualizarUsuario(UUID id, UsuarioRequestDTO usuarioRequestDTO);
-    List<UsuarioResponseDTO> findByName(String nome);
+    List<UsuarioResponseDTO> findByName(String name);
 }
