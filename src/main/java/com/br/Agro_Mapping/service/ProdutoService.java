@@ -90,7 +90,16 @@ public class ProdutoService implements ProdutoServiceInterface {
     @Override
     public List<ProdutoResponseDTO> findByName(String name) {
         List<Produto> produtos = produtoRepository.findByNome(name);
-        return (List<ProdutoResponseDTO>) ResponseEntity.ok(produtos);
+        return produtos.stream()
+                .map(produto -> new ProdutoResponseDTO(
+                        produto.getIdProduto(),
+                        produto.getNome(),
+                        produto.getCategoria(),
+                        produto.getPreco(),
+                        produto.getDescricao(),
+                        produto.getQuantidadeDisponivel(),
+                        produto.getImagem()))
+                .toList();
     }
 
 }
