@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface PedidoServiceInterface {
     PedidoResponseDTO criarPedido(PedidoRequestDTO pedidoRequestDTO);
-    List<PedidoResponseDTO> ListaPedidos();
+    List<PedidoResponseDTO> listaPedidos();
     void deletarPedido(UUID id);
     PedidoResponseDTO atualizarPedido(UUID id, PedidoRequestDTO pedidoRequestDTO);
 

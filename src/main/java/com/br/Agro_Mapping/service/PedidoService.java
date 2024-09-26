@@ -35,7 +35,7 @@ public class PedidoService implements PedidoServiceInterface {
 
     @Transactional(readOnly = true)
     @Override
-    public List<PedidoResponseDTO> ListaPedidos() {
+    public List<PedidoResponseDTO> listaPedidos() {
         List<Pedido> pedidos = pedidoRepository.findAll();
         return pedidos.stream()
                 .map(pedido -> new PedidoResponseDTO(

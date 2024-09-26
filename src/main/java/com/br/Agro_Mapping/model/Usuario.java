@@ -18,7 +18,7 @@ public class Usuario  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID idUsuario;
 
     @Column(name = "nome", nullable = false)
     @NotBlank(message = "O campo nome é obrigatório")
