@@ -4,6 +4,7 @@ import com.br.Agro_Mapping.dto.request.UsuarioRequestDTO;
 import com.br.Agro_Mapping.dto.responses.UsuarioResponseDTO;
 import com.br.Agro_Mapping.model.Usuario;
 import com.br.Agro_Mapping.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class UsuarioService implements UsuarioServiceInterface {
 
     private final UsuarioRepository usuarioRepository;
 
+    @Transactional
     @Override
     public UsuarioResponseDTO criarUsuario(UsuarioRequestDTO usuarioRequestDTO) {
         Usuario usuario = Usuario.newUsuario(
@@ -32,6 +34,7 @@ public class UsuarioService implements UsuarioServiceInterface {
         return new UsuarioResponseDTO(usuarioSalvo.getId(), usuarioSalvo.getNome(), usuarioSalvo.getEmail(), usuario.getDataDeNascimento());
     }
 
+    @Transactional
     @Override
     public List<UsuarioResponseDTO> listarUsuarios() {
         List<Usuario> usuarios = usuarioRepository.findAll();
@@ -40,17 +43,20 @@ public class UsuarioService implements UsuarioServiceInterface {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public Optional<UsuarioResponseDTO> buscarUsuarioPorId(UUID id) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
         return usuarioOptional.map(usuario -> new UsuarioResponseDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getDataDeNascimento()));
     }
 
+    @Transactional
     @Override
     public void deletarUsuario(UUID id) {
         usuarioRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public UsuarioResponseDTO atualizarUsuario(UUID id, UsuarioRequestDTO usuarioRequestDTO) {
         Usuario usuario = usuarioRepository.findById(id)
@@ -70,6 +76,7 @@ public class UsuarioService implements UsuarioServiceInterface {
                 usuario.getDataDeNascimento());
     }
 
+    @Transactional
     @Override
     public List<UsuarioResponseDTO> findByName(String nome) {
         List<Usuario> usuarios = usuarioRepository.findByNome(nome);
