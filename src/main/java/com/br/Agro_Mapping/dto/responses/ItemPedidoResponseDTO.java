@@ -3,6 +3,6 @@ package com.br.Agro_Mapping.dto.responses;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public record ItemPedidoResponseDTO(UUID idPedido, LocalDate dataPedido, Double valorTotal
+public record ItemPedidoResponseDTO(UUID idPedido, Double precoUnitario, Integer quantidade
 
 ) {}
