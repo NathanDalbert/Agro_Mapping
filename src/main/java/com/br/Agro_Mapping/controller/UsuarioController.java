@@ -1,5 +1,6 @@
 package com.br.Agro_Mapping.controller;
 
+import com.br.Agro_Mapping.controller.swagger.UsuarioSwagger;
 import com.br.Agro_Mapping.dto.request.UsuarioRequestDTO;
 import com.br.Agro_Mapping.dto.responses.UsuarioResponseDTO;
 import com.br.Agro_Mapping.service.UsuarioServiceInterface;
@@ -15,22 +16,25 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/usuario")
-public class UsuarioController {
+public class UsuarioController implements UsuarioSwagger {
 
     private final UsuarioServiceInterface usuarioServiceInterface;
 
+    @Override
     @PostMapping
     public ResponseEntity<UsuarioResponseDTO> criarUsuario(@Valid @RequestBody UsuarioRequestDTO usuarioRequestDTO) {
         UsuarioResponseDTO usuarioResponseDTO = usuarioServiceInterface.criarUsuario(usuarioRequestDTO);
         return ResponseEntity.ok(usuarioResponseDTO);
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<List<UsuarioResponseDTO>> listarUsuarios() {
         List<UsuarioResponseDTO> usuarios = usuarioServiceInterface.listarUsuarios();
         return ResponseEntity.ok(usuarios);
     }
 
+    @Override
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioResponseDTO> buscarUsuarioPorId(@PathVariable UUID id) {
         Optional<UsuarioResponseDTO> usuario = usuarioServiceInterface.buscarUsuarioPorId(id);
@@ -38,6 +42,7 @@ public class UsuarioController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Override
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable UUID id,
                                                                @Valid @RequestBody UsuarioRequestDTO usuarioRequestDTO) {
@@ -45,14 +50,17 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioAtualizado);
     }
 
+    @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarUsuario(@PathVariable UUID id) {
         usuarioServiceInterface.deletarUsuario(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Override
     @GetMapping("/buscarUsuarioPorNome/nome/{nome}")
     public ResponseEntity<List<UsuarioResponseDTO>> buscarUsuarioPorNome(@PathVariable("nome") String nome) {
         List<UsuarioResponseDTO> usuarios = usuarioServiceInterface.findByName(nome);
         return ResponseEntity.ok(usuarios);
-}
+    }
 }

@@ -1,5 +1,6 @@
 package com.br.Agro_Mapping.controller;
 
+import com.br.Agro_Mapping.controller.swagger.ItemPedidoSwagger;
 import com.br.Agro_Mapping.dto.request.ItemPedidoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.ItemPedidoResponseDTO;
 import com.br.Agro_Mapping.service.ItemPedidoServiceInterface;
@@ -14,32 +15,35 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/itemPedido")
-public class ItemPedidoController {
+public class ItemPedidoController implements ItemPedidoSwagger {
 
     private final ItemPedidoServiceInterface itemPedidoServiceInterface;
 
-
+    @Override
     @PostMapping
     public ResponseEntity<ItemPedidoResponseDTO> criarItemPedido(@Valid @RequestBody ItemPedidoRequestDTO itemPedidoRequestDTO) {
         ItemPedidoResponseDTO itemPedidoResponseDTO = itemPedidoServiceInterface.criarItemPedido(itemPedidoRequestDTO);
         return ResponseEntity.ok(itemPedidoResponseDTO);
     }
+    @Override
     @GetMapping("/")
     public ResponseEntity<List<ItemPedidoResponseDTO>> listarItemPedidos() {
-       List <ItemPedidoResponseDTO> itemPedidos = itemPedidoServiceInterface.listaItemPedidos();
+        List<ItemPedidoResponseDTO> itemPedidos = itemPedidoServiceInterface.listaItemPedidos();
         return ResponseEntity.ok(itemPedidos);
     }
 
+    @Override
     @PutMapping
     public ResponseEntity<ItemPedidoResponseDTO> atualizarItemPedido(@PathVariable UUID id,
-                                                                @Valid @RequestBody ItemPedidoRequestDTO itemPedidoRequestDTO) {
-          ItemPedidoResponseDTO itemPedidoAtualizado = itemPedidoServiceInterface.atualizarItemPedido(id, itemPedidoRequestDTO);
-          return ResponseEntity.ok(itemPedidoAtualizado);
-     }
+                                                                     @Valid @RequestBody ItemPedidoRequestDTO itemPedidoRequestDTO) {
+        ItemPedidoResponseDTO itemPedidoAtualizado = itemPedidoServiceInterface.atualizarItemPedido(id, itemPedidoRequestDTO);
+        return ResponseEntity.ok(itemPedidoAtualizado);
+    }
 
-     @DeleteMapping("/{id}")
+    @Override
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarItemPedido(@PathVariable UUID id) {
-         itemPedidoServiceInterface.deletarItemPedido(id);
-         return ResponseEntity.noContent().build();
-     }
+        itemPedidoServiceInterface.deletarItemPedido(id);
+        return ResponseEntity.noContent().build();
+    }
 }
