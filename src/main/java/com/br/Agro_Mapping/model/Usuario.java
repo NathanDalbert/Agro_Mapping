@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -37,6 +38,12 @@ public class Usuario  {
     @Column(name = "data_de_nascimento", nullable = false)
     @NotNull(message = "O campo data de nascimento é obrigatório")
     private LocalDate dataDeNascimento;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<Contato> contatos;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<Pedido> pedidos;
 
     private Usuario(String nome, String email, String senha, LocalDate dataDeNascimento) {
         this.nome = nome;

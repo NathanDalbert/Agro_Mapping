@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -32,6 +33,9 @@ public class Feira {
     @Column(name = "data_funcionamento", nullable = false)
     @NotNull(message = "A data de funcionamento é obrigatória")
     private LocalDate dataFuncionamento;
+
+    @OneToMany(mappedBy = "feira")
+    private List<Produto> produtos;
 
     private Feira(String nome, String localizacao, LocalDate dataFuncionamento) {
         this.nome = nome;

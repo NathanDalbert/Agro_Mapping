@@ -21,11 +21,19 @@ public class ItemPedido {
     @Column(name = "id_item_pedido", nullable = false)
     private UUID id;
 
-    @Column(name = "id_produto", nullable = false)
+    @Column(name = "preco_unitario", nullable = false)
     private double precoUnitario;
 
     @Column(name = "quantidade", nullable = false)
     private Integer quantidade;
+
+    @ManyToOne
+    @JoinColumn(name = "id_pedido")
+    private Pedido pedido;
+
+    @ManyToOne
+    @JoinColumn(name = "id_produto")
+    private Produto produto;
 
     private ItemPedido(double precoUnitario, Integer quantidade) {
         this.precoUnitario = precoUnitario;

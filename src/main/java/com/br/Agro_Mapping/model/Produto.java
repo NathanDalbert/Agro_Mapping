@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -48,6 +49,13 @@ public class Produto {
     @Size (max = 500, message = "O link deve ter no máximo 500 caracteres")
     @NotBlank(message = "Adicione uma imagem a o produto")
     private String imagem;
+
+    @ManyToOne
+    @JoinColumn(name = "id_feira")
+    private Feira feira;
+
+    @OneToMany(mappedBy = "produto")
+    private List<ItemPedido> itensPedido;
 
     private Produto(String nome, String categoria, Integer quantidadeDisponivel, Double preco, String descricao, String imagem) {
         this.nome = nome;

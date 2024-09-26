@@ -1,11 +1,11 @@
 package com.br.Agro_Mapping.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -29,6 +29,13 @@ public class Pedido {
     @Column(name = "valor_total", nullable = false)
     @NotNull(message = "O campo valor total é obrigatório")
     private Double valorTotal;
+
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
+
+    @OneToMany(mappedBy = "pedido")
+    private List<ItemPedido> itensPedido;
 
 
     private Pedido(LocalDate dataPedido, Double valorTotal) {

@@ -26,4 +26,8 @@ public class Contato {
     @NotBlank(message = "O campo telefone é obrigatório")
     private String telefone;
 
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
+
 }
