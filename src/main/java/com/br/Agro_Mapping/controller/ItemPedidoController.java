@@ -2,7 +2,7 @@ package com.br.Agro_Mapping.controller;
 
 import com.br.Agro_Mapping.dto.request.ItemPedidoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.ItemPedidoResponseDTO;
-import com.br.Agro_Mapping.service.ItemPedidoService;
+import com.br.Agro_Mapping.service.ItemPedidoServiceInterface;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,30 +16,30 @@ import java.util.UUID;
 @RequestMapping("/itemPedido")
 public class ItemPedidoController {
 
-    private final ItemPedidoService itemPedidoService;
+    private final ItemPedidoServiceInterface itemPedidoServiceInterface;
 
 
     @PostMapping
     public ResponseEntity<ItemPedidoResponseDTO> criarItemPedido(@Valid @RequestBody ItemPedidoRequestDTO itemPedidoRequestDTO) {
-        ItemPedidoResponseDTO itemPedidoResponseDTO = itemPedidoService.criarItemPedido(itemPedidoRequestDTO);
+        ItemPedidoResponseDTO itemPedidoResponseDTO = itemPedidoServiceInterface.criarItemPedido(itemPedidoRequestDTO);
         return ResponseEntity.ok(itemPedidoResponseDTO);
     }
     @GetMapping("/")
     public ResponseEntity<List<ItemPedidoResponseDTO>> listarItemPedidos() {
-       List <ItemPedidoResponseDTO> itemPedidos = itemPedidoService.listaItemPedidos();
+       List <ItemPedidoResponseDTO> itemPedidos = itemPedidoServiceInterface.listaItemPedidos();
         return ResponseEntity.ok(itemPedidos);
     }
 
     @PutMapping
     public ResponseEntity<ItemPedidoResponseDTO> atualizarItemPedido(@PathVariable UUID id,
                                                                 @Valid @RequestBody ItemPedidoRequestDTO itemPedidoRequestDTO) {
-          ItemPedidoResponseDTO itemPedidoAtualizado = itemPedidoService.atualizarItemPedido(id, itemPedidoRequestDTO);
+          ItemPedidoResponseDTO itemPedidoAtualizado = itemPedidoServiceInterface.atualizarItemPedido(id, itemPedidoRequestDTO);
           return ResponseEntity.ok(itemPedidoAtualizado);
      }
 
      @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarItemPedido(@PathVariable UUID id) {
-         itemPedidoService.deletarItemPedido(id);
+         itemPedidoServiceInterface.deletarItemPedido(id);
          return ResponseEntity.noContent().build();
      }
 }

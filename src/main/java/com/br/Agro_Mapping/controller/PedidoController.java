@@ -2,7 +2,8 @@ package com.br.Agro_Mapping.controller;
 
 import com.br.Agro_Mapping.dto.request.PedidoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.PedidoResponseDTO;
-import com.br.Agro_Mapping.service.PedidoService;
+
+import com.br.Agro_Mapping.service.PedidoServiceInterface;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,30 +17,29 @@ import java.util.UUID;
 @RequestMapping("/pedido")
 public class PedidoController {
 
-    private final PedidoService pedidoService;
+    private final PedidoServiceInterface pedidoServiceInterface;
 
     @PostMapping
     public ResponseEntity<PedidoResponseDTO> criarPedido(@Valid @RequestBody PedidoRequestDTO pedidoRequestDTO) {
-        PedidoResponseDTO pedidoResponseDTO = pedidoService.criarPedido(pedidoRequestDTO);
+        PedidoResponseDTO pedidoResponseDTO = pedidoServiceInterface.criarPedido(pedidoRequestDTO);
         return ResponseEntity.ok(pedidoResponseDTO);
     }
 
     @GetMapping("/")
     public ResponseEntity<List<PedidoResponseDTO>> listarPedidos() {
-        List<PedidoResponseDTO> pedidos = pedidoService.listaPedidos();
+        List<PedidoResponseDTO> pedidos = pedidoServiceInterface.listaPedidos();
         return ResponseEntity.ok(pedidos);
     }
 
     @PutMapping
-    public ResponseEntity<PedidoResponseDTO> atualizarPedido(@PathVariable UUID id,
-                                                           @Valid @RequestBody PedidoRequestDTO pedidoRequestDTO) {
-        PedidoResponseDTO pedidoAtualizado = pedidoService.atualizarPedido(id, pedidoRequestDTO);
+    public ResponseEntity<PedidoResponseDTO> atualizarPedido(@PathVariable UUID id, @Valid @RequestBody PedidoRequestDTO pedidoRequestDTO) {
+        PedidoResponseDTO pedidoAtualizado = pedidoServiceInterface.atualizarPedido(id, pedidoRequestDTO);
         return ResponseEntity.ok(pedidoAtualizado);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarPedido(@PathVariable UUID id) {
-        pedidoService.deletarPedido(id);
+        pedidoServiceInterface.deletarPedido(id);
         return ResponseEntity.noContent().build();
     }
 }
