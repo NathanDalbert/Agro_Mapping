@@ -2,6 +2,7 @@ package com.br.Agro_Mapping.service;
 
 import com.br.Agro_Mapping.dto.request.ItemPedidoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.ItemPedidoResponseDTO;
+import com.br.Agro_Mapping.mapper.ItemPedidoMapper;
 import com.br.Agro_Mapping.model.ItemPedido;
 import com.br.Agro_Mapping.repository.ItemPedidoRepository;
 import jakarta.transaction.Transactional;
@@ -16,21 +17,14 @@ import java.util.UUID;
 public class ItemPedidoService implements ItemPedidoServiceInterface {
 
     private final ItemPedidoRepository itemPedidoRepository;
+    private final ItemPedidoMapper itemPedidoMapper;
 
     @Transactional
     @Override
     public ItemPedidoResponseDTO criarItemPedido(ItemPedidoRequestDTO itemPedidoRequestDTO) {
-        ItemPedido itemPedido = ItemPedido.newItemPedido(
-                itemPedidoRequestDTO.precoUnitario(),
-                itemPedidoRequestDTO.quantidade());
-
+        ItemPedido itemPedido = itemPedidoMapper.toItemPedido(itemPedidoRequestDTO);
         ItemPedido itemPedidoSalvo = itemPedidoRepository.save(itemPedido);
-
-        return new ItemPedidoResponseDTO(
-                itemPedidoSalvo.getId(),
-                itemPedidoSalvo.getPrecoUnitario(),
-                itemPedidoSalvo.getQuantidade()
-        );
+        return itemPedidoMapper.toItemPedidoResponseDTO(itemPedidoSalvo);
     }
 
     @Transactional
@@ -38,10 +32,7 @@ public class ItemPedidoService implements ItemPedidoServiceInterface {
     public List<ItemPedidoResponseDTO> listaItemPedidos() {
         List<ItemPedido> itemPedidos = itemPedidoRepository.findAll();
         return itemPedidos.stream()
-                .map(itemPedido -> new ItemPedidoResponseDTO(
-                    itemPedido.getId(),
-                    itemPedido.getPrecoUnitario(),
-                    itemPedido.getQuantidade()))
+                .map(itemPedidoMapper::toItemPedidoResponseDTO)
                 .toList();
     }
 
@@ -55,17 +46,12 @@ public class ItemPedidoService implements ItemPedidoServiceInterface {
     @Override
     public ItemPedidoResponseDTO atualizarItemPedido(UUID id, ItemPedidoRequestDTO itemPedidoRequestDTO) {
         ItemPedido itemPedido = itemPedidoRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("ItemPedido não encontrado com o ID: " + id));
+                .orElseThrow(() -> new RuntimeException("ItemPedido não encontrado com o ID: " + id));
+
         itemPedido.setPrecoUnitario(itemPedidoRequestDTO.precoUnitario());
         itemPedido.setQuantidade(itemPedidoRequestDTO.quantidade());
 
         ItemPedido itemPedidoAtualizado = itemPedidoRepository.save(itemPedido);
-
-        return new ItemPedidoResponseDTO(
-                itemPedidoAtualizado.getId(),
-                itemPedidoAtualizado.getPrecoUnitario(),
-                itemPedidoAtualizado.getQuantidade()
-        );
-
+        return itemPedidoMapper.toItemPedidoResponseDTO(itemPedidoAtualizado);
     }
 }
