@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +34,7 @@ public class UsuarioService implements UsuarioServiceInterface {
         List<Usuario> usuarios = usuarioRepository.findAll();
         return usuarios.stream()
                 .map(usuarioMapper::toUsuarioResponseDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Transactional

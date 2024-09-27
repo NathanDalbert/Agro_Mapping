@@ -1,6 +1,7 @@
 package com.br.Agro_Mapping.controller;
 
 
+import com.br.Agro_Mapping.controller.swagger.FeiraSwagger;
 import com.br.Agro_Mapping.dto.request.FeiraRequestDTO;
 import com.br.Agro_Mapping.dto.responses.FeiraResponseDTO;
 import com.br.Agro_Mapping.service.FeiraServiceInterface;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/feiras")
-public class FeiraController {
+public class FeiraController implements FeiraSwagger {
 
     private final FeiraServiceInterface feiraServiceInterface;
 
