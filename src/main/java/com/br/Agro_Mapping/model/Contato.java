@@ -30,4 +30,12 @@ public class Contato {
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
+    private Contato(String telefone){
+        this.telefone = telefone;
+    }
+
+    public static Contato newContato(String telefone){
+        return new Contato(telefone);
+    }
+
 }
