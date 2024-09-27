@@ -2,7 +2,7 @@ package com.br.Agro_Mapping.service;
 
 import com.br.Agro_Mapping.dto.request.ProdutoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.ProdutoResponseDTO;
-import com.br.Agro_Mapping.mapper.ProdutoMapper;
+import com.br.Agro_Mapping.service.mapper.ProdutoMapper;
 import com.br.Agro_Mapping.model.Produto;
 import com.br.Agro_Mapping.repository.ProdutoRepository;
 import jakarta.transaction.Transactional;

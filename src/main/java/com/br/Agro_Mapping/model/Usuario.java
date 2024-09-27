@@ -1,5 +1,6 @@
 package com.br.Agro_Mapping.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -35,6 +36,7 @@ public class Usuario  {
     @Size(min = 6, message = "A senha deve ter pelo menos 6 caracteres")
     private String senha;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @Column(name = "data_de_nascimento", nullable = false)
     @NotNull(message = "O campo data de nascimento é obrigatório")
     private LocalDate dataDeNascimento;

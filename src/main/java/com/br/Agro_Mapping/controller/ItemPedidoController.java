@@ -7,6 +7,7 @@ import com.br.Agro_Mapping.service.ItemPedidoServiceInterface;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,24 +16,25 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/itemPedido")
+
 public class ItemPedidoController implements ItemPedidoSwagger {
 
     private final ItemPedidoServiceInterface itemPedidoServiceInterface;
 
-    @Override
+
     @PostMapping
     public ResponseEntity<ItemPedidoResponseDTO> criarItemPedido(@Valid @RequestBody ItemPedidoRequestDTO itemPedidoRequestDTO) {
         ItemPedidoResponseDTO itemPedidoResponseDTO = itemPedidoServiceInterface.criarItemPedido(itemPedidoRequestDTO);
         return ResponseEntity.ok(itemPedidoResponseDTO);
     }
-    @Override
+
     @GetMapping("/")
     public ResponseEntity<List<ItemPedidoResponseDTO>> listarItemPedidos() {
         List<ItemPedidoResponseDTO> itemPedidos = itemPedidoServiceInterface.listaItemPedidos();
         return ResponseEntity.ok(itemPedidos);
     }
 
-    @Override
+
     @PutMapping
     public ResponseEntity<ItemPedidoResponseDTO> atualizarItemPedido(@PathVariable UUID id,
                                                                      @Valid @RequestBody ItemPedidoRequestDTO itemPedidoRequestDTO) {
@@ -40,7 +42,7 @@ public class ItemPedidoController implements ItemPedidoSwagger {
         return ResponseEntity.ok(itemPedidoAtualizado);
     }
 
-    @Override
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarItemPedido(@PathVariable UUID id) {
         itemPedidoServiceInterface.deletarItemPedido(id);

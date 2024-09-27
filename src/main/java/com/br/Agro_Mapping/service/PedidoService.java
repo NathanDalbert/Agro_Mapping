@@ -2,7 +2,7 @@ package com.br.Agro_Mapping.service;
 
 import com.br.Agro_Mapping.dto.request.PedidoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.PedidoResponseDTO;
-import com.br.Agro_Mapping.mapper.PedidoMapper;
+import com.br.Agro_Mapping.service.mapper.PedidoMapper;
 import com.br.Agro_Mapping.model.Pedido;
 import com.br.Agro_Mapping.repository.PedidoRepository;
 import lombok.RequiredArgsConstructor;

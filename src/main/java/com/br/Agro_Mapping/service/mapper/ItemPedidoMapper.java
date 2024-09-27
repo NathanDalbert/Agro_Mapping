@@ -1,4 +1,4 @@
-package com.br.Agro_Mapping.mapper;
+package com.br.Agro_Mapping.service.mapper;
 
 import com.br.Agro_Mapping.dto.request.ItemPedidoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.ItemPedidoResponseDTO;

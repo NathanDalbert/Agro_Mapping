@@ -7,6 +7,7 @@ import com.br.Agro_Mapping.service.UsuarioServiceInterface;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,25 +17,25 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/usuario")
+
 public class UsuarioController implements UsuarioSwagger {
 
     private final UsuarioServiceInterface usuarioServiceInterface;
 
-    @Override
+
     @PostMapping
     public ResponseEntity<UsuarioResponseDTO> criarUsuario(@Valid @RequestBody UsuarioRequestDTO usuarioRequestDTO) {
         UsuarioResponseDTO usuarioResponseDTO = usuarioServiceInterface.criarUsuario(usuarioRequestDTO);
         return ResponseEntity.ok(usuarioResponseDTO);
     }
 
-    @Override
     @GetMapping
     public ResponseEntity<List<UsuarioResponseDTO>> listarUsuarios() {
         List<UsuarioResponseDTO> usuarios = usuarioServiceInterface.listarUsuarios();
         return ResponseEntity.ok(usuarios);
     }
 
-    @Override
+
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioResponseDTO> buscarUsuarioPorId(@PathVariable UUID id) {
         Optional<UsuarioResponseDTO> usuario = usuarioServiceInterface.buscarUsuarioPorId(id);
@@ -42,7 +43,7 @@ public class UsuarioController implements UsuarioSwagger {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @Override
+
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable UUID id,
                                                                @Valid @RequestBody UsuarioRequestDTO usuarioRequestDTO) {
@@ -50,14 +51,13 @@ public class UsuarioController implements UsuarioSwagger {
         return ResponseEntity.ok(usuarioAtualizado);
     }
 
-    @Override
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarUsuario(@PathVariable UUID id) {
         usuarioServiceInterface.deletarUsuario(id);
         return ResponseEntity.noContent().build();
     }
 
-    @Override
     @GetMapping("/buscarUsuarioPorNome/nome/{nome}")
     public ResponseEntity<List<UsuarioResponseDTO>> buscarUsuarioPorNome(@PathVariable("nome") String nome) {
         List<UsuarioResponseDTO> usuarios = usuarioServiceInterface.findByName(nome);

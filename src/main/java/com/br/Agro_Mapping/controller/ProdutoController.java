@@ -7,6 +7,7 @@ import com.br.Agro_Mapping.service.ProdutoServiceInterface;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,14 +20,14 @@ public class ProdutoController implements ProdutoSwagger {
 
     private final ProdutoServiceInterface produtoServiceInterface;
 
-    @Override
+
     @PostMapping
     public ResponseEntity<ProdutoResponseDTO> criarProduto(@Valid @RequestBody ProdutoRequestDTO produtoRequestDTO) {
         ProdutoResponseDTO produtoResponseDTO = produtoServiceInterface.criarProduto(produtoRequestDTO);
         return ResponseEntity.ok(produtoResponseDTO);
     }
 
-    @Override
+
     @GetMapping("/")
     public ResponseEntity<List<ProdutoResponseDTO>> listarProdutos() {
         List<ProdutoResponseDTO> produtos = produtoServiceInterface.listarProdutos();
@@ -34,14 +35,13 @@ public class ProdutoController implements ProdutoSwagger {
     }
 
     @GetMapping
-    @Override
     public ResponseEntity<List<ProdutoResponseDTO>> buscarPorNome(@RequestParam String nome) {
         List<ProdutoResponseDTO> produto = produtoServiceInterface.findByName(nome);
         return ResponseEntity.ok(produto);
 
     }
 
-    @Override
+
     @PutMapping
     public ResponseEntity<ProdutoResponseDTO> atualizarProduto(@PathVariable UUID id,
                                                                @Valid @RequestBody ProdutoRequestDTO produtoRequestDTO) {
@@ -49,7 +49,7 @@ public class ProdutoController implements ProdutoSwagger {
         return ResponseEntity.ok(produtoAtualizado);
     }
 
-    @Override
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarProduto(@PathVariable UUID id) {
         produtoServiceInterface.deletarProduto(id);
