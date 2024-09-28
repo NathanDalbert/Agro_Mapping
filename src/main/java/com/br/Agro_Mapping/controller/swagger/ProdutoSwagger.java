@@ -20,14 +20,15 @@ public interface ProdutoSwagger {
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
     @PostMapping
-    ResponseEntity<ProdutoResponseDTO> criarProduto(@RequestBody ProdutoRequestDTO produtoRequestDTO);
+    ResponseEntity<ProdutoResponseDTO> criarProduto(@RequestBody ProdutoRequestDTO produtoRequestDTO,
+                                                    @RequestParam UUID usuarioId);
 
     @Operation(summary = "Lista todos os produtos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista de produtos retornada com sucesso"),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
-    @GetMapping
+    @GetMapping("/")
     ResponseEntity<List<ProdutoResponseDTO>> listarProdutos();
 
     @Operation(summary = "Busca produtos por nome")
@@ -36,9 +37,6 @@ public interface ProdutoSwagger {
             @ApiResponse(responseCode = "404", description = "Nenhum produto encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
-    @GetMapping("/buscarProdutoPorNome/nome/{nome}")
-    ResponseEntity<List<ProdutoResponseDTO>> buscarProdutoPorNome(@PathVariable("nome") String nome);
-
     @GetMapping
     ResponseEntity<List<ProdutoResponseDTO>> buscarPorNome(@RequestParam String nome);
 
@@ -50,7 +48,8 @@ public interface ProdutoSwagger {
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
     @PutMapping("/{id}")
-    ResponseEntity<ProdutoResponseDTO> atualizarProduto(@PathVariable UUID id, @RequestBody ProdutoRequestDTO produtoRequestDTO);
+    ResponseEntity<ProdutoResponseDTO> atualizarProduto(@PathVariable UUID id,
+                                                        @RequestBody ProdutoRequestDTO produtoRequestDTO);
 
     @Operation(summary = "Deleta um produto")
     @ApiResponses(value = {
@@ -60,4 +59,13 @@ public interface ProdutoSwagger {
     })
     @DeleteMapping("/{id}")
     ResponseEntity<Void> deletarProduto(@PathVariable UUID id);
+
+    @Operation(summary = "Busca produtos por nome (caminho)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Produtos encontrados com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Nenhum produto encontrado"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    })
+    @GetMapping("/buscarProdutoPorNome/nome/{nome}")
+    ResponseEntity<List<ProdutoResponseDTO>> buscarProdutoPorNome(@PathVariable("nome") String nome);
 }

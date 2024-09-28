@@ -3,21 +3,22 @@ package com.br.Agro_Mapping.service.mapper;
 import com.br.Agro_Mapping.dto.request.UsuarioRequestDTO;
 import com.br.Agro_Mapping.dto.responses.UsuarioResponseDTO;
 import com.br.Agro_Mapping.model.Usuario;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Component
 public class UsuarioMapper {
 
     private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final ContatoServiceMapper contatoServiceMapper;
+    private final ProdutoMapper produtoMapper;
 
-    public UsuarioMapper(ContatoServiceMapper contatoServiceMapper) {
-        this.contatoServiceMapper = contatoServiceMapper;
-    }
+
 
     public Usuario toUsuario(UsuarioRequestDTO usuarioRequestDTO) {
         return Usuario.newUsuario(
@@ -40,7 +41,11 @@ public class UsuarioMapper {
                 usuario.getContatos()
                         .stream()
                         .map(contato -> contatoServiceMapper.toContatoResponseDTO(contato))
-                        .collect(Collectors.toList())
+                        .toList(),
+                usuario.getProdutos()
+                        .stream()
+                        .map(produto -> produtoMapper.toProdutoResponseDTO(produto))
+                        .toList()
         );
     }
 

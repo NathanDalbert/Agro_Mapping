@@ -49,6 +49,9 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<Contato> contatos;
 
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private List<Produto> produtos;
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pedido> pedidos ;
 
@@ -58,6 +61,7 @@ public class Usuario {
         this.senha = senha;
         this.dataDeNascimento = dataDeNascimento;
         this.contatos = new ArrayList<>();
+        this.produtos = new ArrayList<>();
         this.pedidos = new ArrayList<>();
 
     }

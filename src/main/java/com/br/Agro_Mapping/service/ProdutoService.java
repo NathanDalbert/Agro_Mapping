@@ -2,6 +2,8 @@ package com.br.Agro_Mapping.service;
 
 import com.br.Agro_Mapping.dto.request.ProdutoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.ProdutoResponseDTO;
+import com.br.Agro_Mapping.model.Usuario;
+import com.br.Agro_Mapping.repository.UsuarioRepository;
 import com.br.Agro_Mapping.service.mapper.ProdutoMapper;
 import com.br.Agro_Mapping.model.Produto;
 import com.br.Agro_Mapping.repository.ProdutoRepository;
@@ -18,11 +20,15 @@ public class ProdutoService implements ProdutoServiceInterface {
 
     private final ProdutoRepository produtoRepository;
     private final ProdutoMapper produtoMapper;
+    private final UsuarioRepository usuarioRepository;
 
     @Transactional
     @Override
-    public ProdutoResponseDTO criarProduto(ProdutoRequestDTO produtoRequestDTO) {
-        Produto produto = produtoMapper.toProduto(produtoRequestDTO);
+    public ProdutoResponseDTO criarProduto(ProdutoRequestDTO produtoRequestDTO, UUID usuarioId) {
+        Usuario usuario= usuarioRepository.findById(usuarioId).orElseThrow(()-> new RuntimeException("Usuário não encontrado"));
+
+        Produto produto = produtoMapper.toProduto(produtoRequestDTO,usuario);
+        produto.setUsuario(usuario);
         Produto produtoSalvo = produtoRepository.save(produto);
         return produtoMapper.toProdutoResponseDTO(produtoSalvo);
     }
