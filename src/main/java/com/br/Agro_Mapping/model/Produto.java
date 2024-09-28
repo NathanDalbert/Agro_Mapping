@@ -1,6 +1,7 @@
 package com.br.Agro_Mapping.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -35,10 +36,12 @@ public class Produto {
 
     @Column(name = "quantidade_disponivel", nullable = false)
     @NotNull(message = "Digite a quantidade disponível do produto")
+    @Min(value = 1, message = "A quantidade disponível deve ser maior que zero")
     private Integer quantidadeDisponivel;
 
     @Column(name = "preco", nullable = false)
     @NotNull(message = "Digite o preço do produto")
+    @Min(value =1, message = "O preço deve ser maior que zero")
     private Double preco;
 
     @Column(name = "descricao", nullable = false)
@@ -69,6 +72,13 @@ public class Produto {
 
 
     public static Produto newProduto(String nome, String categoria, Integer quantidadeDisponivel, Double preco, String descricao, String imagem) {
+        if (quantidadeDisponivel <= 0) {
+            throw new IllegalArgumentException("A quantidade disponível deve ser maior que zero.");
+        }
+        if (preco < 0) {
+            throw new IllegalArgumentException("O preço deve ser maior ou igual a zero.");
+        }
         return new Produto(nome, categoria, quantidadeDisponivel, preco, descricao, imagem);
     }
+
 }
