@@ -7,7 +7,6 @@ import com.br.Agro_Mapping.service.ProdutoServiceInterface;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,8 +21,8 @@ public class ProdutoController implements ProdutoSwagger {
 
 
     @PostMapping
-    public ResponseEntity<ProdutoResponseDTO> criarProduto(@Valid @RequestBody ProdutoRequestDTO produtoRequestDTO) {
-        ProdutoResponseDTO produtoResponseDTO = produtoServiceInterface.criarProduto(produtoRequestDTO);
+    public ResponseEntity<ProdutoResponseDTO> criarProduto(@Valid @RequestBody ProdutoRequestDTO produtoRequestDTO,@RequestParam UUID usuarioId) {
+        ProdutoResponseDTO produtoResponseDTO = produtoServiceInterface.criarProduto(produtoRequestDTO, usuarioId);
         return ResponseEntity.ok(produtoResponseDTO);
     }
 
