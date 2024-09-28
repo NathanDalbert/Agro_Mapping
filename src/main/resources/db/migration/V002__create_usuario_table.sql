@@ -1,5 +1,5 @@
 CREATE TABLE usuario (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    id_usuario UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     nome VARCHAR(255) NOT NULL CHECK (char_length(nome) > 1),
     email VARCHAR(255) NOT NULL UNIQUE CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[A-Za-z]{2,}$'),
     senha VARCHAR(255) NOT NULL CHECK (char_length(senha) >= 8),

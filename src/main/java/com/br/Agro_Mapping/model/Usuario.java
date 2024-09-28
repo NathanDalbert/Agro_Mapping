@@ -24,6 +24,7 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id_usuario", nullable = false)
     private UUID idUsuario;
 
     @Column(name = "nome", nullable = false)
@@ -58,6 +59,7 @@ public class Usuario {
         this.dataDeNascimento = dataDeNascimento;
         this.contatos = new ArrayList<>();
         this.pedidos = new ArrayList<>();
+
     }
 
     public static Usuario newUsuario(String nome, String email, String senha, LocalDate dataDeNascimento) {

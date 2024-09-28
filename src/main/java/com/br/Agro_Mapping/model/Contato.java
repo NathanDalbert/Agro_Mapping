@@ -27,7 +27,7 @@ public class Contato {
     private String telefone;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
     private Contato(String telefone) {

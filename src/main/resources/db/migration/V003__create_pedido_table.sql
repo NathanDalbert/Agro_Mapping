@@ -3,5 +3,5 @@ CREATE TABLE pedido (
     data_pedido DATE NOT NULL DEFAULT CURRENT_DATE,
     valor_total NUMERIC(10, 2) NOT NULL CHECK (valor_total >= 0),
     id_usuario UUID,
-    CONSTRAINT fk_pedido_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE
+    CONSTRAINT fk_pedido_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );
