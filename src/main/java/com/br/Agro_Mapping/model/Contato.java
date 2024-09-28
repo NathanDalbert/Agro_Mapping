@@ -13,29 +13,28 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "contato")
+@Entity
 @Table(name = "contato")
-
 public class Contato {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_contato", nullable = false)
-    private UUID id;
-    @Column(name = "email", nullable = false)
+    private UUID idTelefone;
+
+    @Column(name = "telefone", nullable = false)
     @NotBlank(message = "O campo telefone é obrigatório")
     private String telefone;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario")
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    private Contato(String telefone){
+    private Contato(String telefone) {
         this.telefone = telefone;
     }
 
-    public static Contato newContato(String telefone){
+    public static Contato newContato(String telefone) {
         return new Contato(telefone);
     }
-
 }

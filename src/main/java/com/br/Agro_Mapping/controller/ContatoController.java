@@ -1,6 +1,5 @@
 package com.br.Agro_Mapping.controller;
 
-
 import com.br.Agro_Mapping.dto.request.ContatoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.ContatoResponseDTO;
 import com.br.Agro_Mapping.service.ContatoServiceInterface;
@@ -20,25 +19,28 @@ public class ContatoController {
     private final ContatoServiceInterface contatoServiceInterface;
 
     @PostMapping
-    public ResponseEntity<ContatoResponseDTO> criarContato(@Valid @RequestBody ContatoRequestDTO contatoRequestDTO){
-        ContatoResponseDTO contatoResponseDTO = contatoServiceInterface.criarContato(contatoRequestDTO);
+    public ResponseEntity<ContatoResponseDTO> criarContato(
+            @Valid @RequestBody ContatoRequestDTO contatoRequestDTO,
+            @RequestParam UUID usuarioId
+    ) {
+        ContatoResponseDTO contatoResponseDTO = contatoServiceInterface.criarContato(contatoRequestDTO, usuarioId);
         return ResponseEntity.ok(contatoResponseDTO);
     }
 
     @GetMapping
-    public ResponseEntity<List<ContatoResponseDTO>> listarContatos(){
+    public ResponseEntity<List<ContatoResponseDTO>> listarContatos() {
         List<ContatoResponseDTO> contatos = contatoServiceInterface.listarContato();
         return ResponseEntity.ok(contatos);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ContatoResponseDTO> atualizarContato(@PathVariable UUID id,@Valid @RequestBody ContatoRequestDTO contatoRequestDTO){
+    public ResponseEntity<ContatoResponseDTO> atualizarContato(@PathVariable UUID id, @Valid @RequestBody ContatoRequestDTO contatoRequestDTO) {
         ContatoResponseDTO contatoAtualizado = contatoServiceInterface.atualizarContato(id, contatoRequestDTO);
-        return  ResponseEntity.ok(contatoAtualizado);
+        return ResponseEntity.ok(contatoAtualizado);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletarContato(@PathVariable UUID id){
+    public ResponseEntity<Void> deletarContato(@PathVariable UUID id) {
         contatoServiceInterface.deletarContato(id);
         return ResponseEntity.noContent().build();
     }

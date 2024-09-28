@@ -16,19 +16,25 @@
     <description>Aplicação voltada para o mapeamento de feiras</description>
     <url/>
     <licenses>
-        <license/>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
     </licenses>
     <developers>
-        <developer/>
+        <developer>
+            <id>seu-id</id>
+            <name>Seu Nome</name>
+            <email>seu-email@example.com</email>
+        </developer>
     </developers>
     <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
+        <connection>scm:git:https://github.com/seu-repo.git</connection>
+        <developerConnection>scm:git:https://github.com/seu-repo.git</developerConnection>
+        <url>https://github.com/seu-repo</url>
     </scm>
     <properties>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
     </properties>
     <dependencies>
 
@@ -51,11 +57,13 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
+            <version>10.10.0</version>
         </dependency>
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-database-postgresql</artifactId>
         </dependency>
+
 
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -74,8 +82,6 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.6.0</version>
         </dependency>
-
-
 
     </dependencies>
 
@@ -97,8 +103,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>21</source>
-                    <target>21</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <compilerArgs>--enable-preview</compilerArgs>
                 </configuration>
             </plugin>

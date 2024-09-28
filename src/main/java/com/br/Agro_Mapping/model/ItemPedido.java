@@ -19,7 +19,7 @@ public class ItemPedido {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_item_pedido", nullable = false)
-    private UUID id;
+    private UUID idIemPedido;
 
     @Column(name = "preco_unitario", nullable = false)
     private double precoUnitario;

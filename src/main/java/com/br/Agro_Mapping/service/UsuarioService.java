@@ -1,6 +1,7 @@
 package com.br.Agro_Mapping.service;
 
 import com.br.Agro_Mapping.dto.request.UsuarioRequestDTO;
+import com.br.Agro_Mapping.dto.responses.ContatoResponseDTO;
 import com.br.Agro_Mapping.dto.responses.UsuarioResponseDTO;
 import com.br.Agro_Mapping.service.mapper.UsuarioMapper;
 import com.br.Agro_Mapping.model.Usuario;
@@ -73,6 +74,11 @@ public class UsuarioService implements UsuarioServiceInterface {
         return usuarios.stream()
                 .map(usuarioMapper::toUsuarioResponseDTO).
                  toList();
+    }
+    @Transactional
+    public List<ContatoResponseDTO> buscarContatosPorUsuarioId(UUID id) {
+        Usuario usuario = usuarioRepository.findByIdFetchContatos(id);
+        return usuarioMapper.toUsuarioResponseDTO(usuario).contatos();
     }
 
 }
