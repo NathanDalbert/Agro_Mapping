@@ -10,6 +10,6 @@ import java.util.UUID;
 public interface ContatoServiceInterface {
     ContatoResponseDTO criarContato(ContatoRequestDTO contatoRequestDTO);
     List<ContatoResponseDTO> listarContato();
-    void deletarUsuario(UUID id);
+    void deletarContato(UUID id);
     ContatoResponseDTO atualizarContato(UUID id, ContatoRequestDTO contatoRequestDTO);
 }

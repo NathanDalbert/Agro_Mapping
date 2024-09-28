@@ -37,7 +37,7 @@ public class ContatoService implements ContatoServiceInterface{
     }
 
     @Override
-    public void deletarUsuario(UUID id) {
+    public void deletarContato(UUID id) {
         contatoRepository.deleteById(id);
     }
 
