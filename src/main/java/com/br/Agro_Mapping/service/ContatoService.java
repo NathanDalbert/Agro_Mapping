@@ -5,14 +5,12 @@ import com.br.Agro_Mapping.dto.responses.ContatoResponseDTO;
 import com.br.Agro_Mapping.model.Contato;
 import com.br.Agro_Mapping.model.Usuario;
 import com.br.Agro_Mapping.repository.ContatoRepository;
-import com.br.Agro_Mapping.repository.UsuarioRepository; // Adicionando import para o repositório de usuários
+import com.br.Agro_Mapping.repository.UsuarioRepository;
 import com.br.Agro_Mapping.service.mapper.ContatoServiceMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +43,7 @@ public class ContatoService implements ContatoServiceInterface {
         List<Contato> contatos = contatoRepository.findAll();
         return contatos.stream()
                 .map(contatoServiceMapper::toContatoResponseDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

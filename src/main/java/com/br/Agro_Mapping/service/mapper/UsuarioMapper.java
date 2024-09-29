@@ -5,10 +5,8 @@ import com.br.Agro_Mapping.dto.responses.UsuarioResponseDTO;
 import com.br.Agro_Mapping.model.Usuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-
 import java.time.format.DateTimeFormatter;
-import java.util.stream.Collectors;
+
 
 @RequiredArgsConstructor
 @Component

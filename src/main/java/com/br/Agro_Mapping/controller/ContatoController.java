@@ -1,5 +1,6 @@
 package com.br.Agro_Mapping.controller;
 
+import com.br.Agro_Mapping.controller.swagger.ContatoSwagger;
 import com.br.Agro_Mapping.dto.request.ContatoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.ContatoResponseDTO;
 import com.br.Agro_Mapping.service.ContatoServiceInterface;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/contato")
-public class ContatoController {
+public class ContatoController implements ContatoSwagger {
 
     private final ContatoServiceInterface contatoServiceInterface;
 
