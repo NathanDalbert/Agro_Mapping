@@ -34,8 +34,6 @@ public class Pedido {
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "pedido")
-    private List<ItemPedido> itensPedido;
 
 
     private Pedido(LocalDate dataPedido, Double valorTotal) {
