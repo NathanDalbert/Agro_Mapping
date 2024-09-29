@@ -2,6 +2,8 @@ package com.br.Agro_Mapping.service;
 
 import com.br.Agro_Mapping.dto.request.PedidoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.PedidoResponseDTO;
+import com.br.Agro_Mapping.model.Usuario;
+import com.br.Agro_Mapping.repository.UsuarioRepository;
 import com.br.Agro_Mapping.service.mapper.PedidoMapper;
 import com.br.Agro_Mapping.model.Pedido;
 import com.br.Agro_Mapping.repository.PedidoRepository;
@@ -17,19 +19,26 @@ import java.util.UUID;
 public class PedidoService implements PedidoServiceInterface {
 
     private final PedidoRepository pedidoRepository;
+
+    private final UsuarioRepository usuarioRepository;
+
     private final PedidoMapper pedidoMapper;
 
+
     @Transactional
-    @Override
+
     public PedidoResponseDTO criarPedido(PedidoRequestDTO pedidoRequestDTO) {
-        Pedido pedido = pedidoMapper.toPedido(pedidoRequestDTO);
+        Usuario usuario = usuarioRepository.findById(pedidoRequestDTO.idUsuario())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o ID: " + pedidoRequestDTO.idUsuario()));
+        Pedido pedido = pedidoMapper.toPedido(pedidoRequestDTO,usuario);
+        pedido.setUsuario(usuario);
         Pedido pedidoSalvo = pedidoRepository.save(pedido);
         return pedidoMapper.toPedidoResponseDTO(pedidoSalvo);
 
     }
 
     @Transactional(readOnly = true)
-    @Override
+
     public List<PedidoResponseDTO> listaPedidos() {
         List<Pedido> pedidos = pedidoRepository.findAll();
         return pedidos.stream()
@@ -38,13 +47,13 @@ public class PedidoService implements PedidoServiceInterface {
     }
 
     @Transactional
-    @Override
+
     public void deletarPedido(UUID id) {
         pedidoRepository.deleteById(id);
     }
 
     @Transactional
-    @Override
+
     public PedidoResponseDTO atualizarPedido(UUID id, PedidoRequestDTO pedidoRequestDTO) {
         Pedido pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado com o ID: " + id));
@@ -54,5 +63,14 @@ public class PedidoService implements PedidoServiceInterface {
         Pedido pedidoAtualizado = pedidoRepository.save(pedido);
 
         return pedidoMapper.toPedidoResponseDTO(pedidoAtualizado);
+    }
+    @Transactional
+    public List<PedidoResponseDTO> listaPedidosPorUsuario(UUID idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        return pedidoRepository.findByUsuario(usuario).stream()
+                .map(pedidoMapper::toPedidoResponseDTO)
+                .toList();
     }
 }

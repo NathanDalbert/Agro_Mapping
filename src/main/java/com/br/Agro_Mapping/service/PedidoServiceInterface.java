@@ -11,5 +11,6 @@ public interface PedidoServiceInterface {
     List<PedidoResponseDTO> listaPedidos();
     void deletarPedido(UUID id);
     PedidoResponseDTO atualizarPedido(UUID id, PedidoRequestDTO pedidoRequestDTO);
+    List<PedidoResponseDTO> listaPedidosPorUsuario(UUID idUsuario);
 
 }

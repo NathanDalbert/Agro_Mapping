@@ -32,7 +32,7 @@ public class UsuarioMapper {
     public UsuarioResponseDTO toUsuarioResponseDTO(Usuario usuario) {
         String formattedDate = usuario.getDataDeNascimento().format(OUTPUT_FORMATTER);
 
-     
+
         return new UsuarioResponseDTO(
                 usuario.getIdUsuario(),
                 usuario.getNome(),
@@ -40,11 +40,11 @@ public class UsuarioMapper {
                 formattedDate,
                 usuario.getContatos()
                         .stream()
-                        .map(contato -> contatoServiceMapper.toContatoResponseDTO(contato))
+                        .map(contatoServiceMapper::toContatoResponseDTO)
                         .toList(),
                 usuario.getProdutos()
                         .stream()
-                        .map(produto -> produtoMapper.toProdutoResponseDTO(produto))
+                        .map(produtoMapper::toProdutoResponseDTO)
                         .toList()
         );
     }

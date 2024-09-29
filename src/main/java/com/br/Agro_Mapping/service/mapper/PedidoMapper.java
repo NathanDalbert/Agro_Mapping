@@ -3,15 +3,25 @@ package com.br.Agro_Mapping.service.mapper;
 import com.br.Agro_Mapping.dto.request.PedidoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.PedidoResponseDTO;
 import com.br.Agro_Mapping.model.Pedido;
+import com.br.Agro_Mapping.model.Usuario;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PedidoMapper {
-    public Pedido toPedido(PedidoRequestDTO pedidoRequestDTO) {
-        return Pedido.newPedido(
+    private final UsuarioMapper usuarioMapper;
+
+    @Autowired
+    public PedidoMapper(UsuarioMapper usuarioMapper) {
+        this.usuarioMapper = usuarioMapper;
+    }
+    public Pedido toPedido(PedidoRequestDTO pedidoRequestDTO, Usuario usuario) {
+        Pedido pedido = Pedido.newPedido(
                 pedidoRequestDTO.dataPedido(),
                 pedidoRequestDTO.valorTotal());
 
+        pedido.setUsuario(usuario);
+        return pedido;
 
     }
 
@@ -19,7 +29,8 @@ public class PedidoMapper {
         return new PedidoResponseDTO(
                 pedido.getIdPedido(),
                 pedido.getDataPedido(),
-                pedido.getValorTotal()
+                pedido.getValorTotal(),
+                usuarioMapper.toUsuarioResponseDTO(pedido.getUsuario())
         );
     }
 }
