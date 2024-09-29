@@ -46,7 +46,7 @@ public class PedidoController implements PedidoSwagger {
 
     @GetMapping("/usuario/{idUsuario}")
     public ResponseEntity<List<PedidoResponseDTO>> listarPedidosPorUsuario(@PathVariable UUID idUsuario) {
-        List<PedidoResponseDTO> pedidos = pedidoService.(idUsuario);
+        List<PedidoResponseDTO> pedidos = pedidoService.listaPedidosPorUsuario(idUsuario);
         return ResponseEntity.ok(pedidos);
     }
 }
