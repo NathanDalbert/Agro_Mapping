@@ -41,7 +41,7 @@ public class Produto {
 
     @Column(name = "preco", nullable = false)
     @NotNull(message = "Digite o preço do produto")
-    @Min(value =1, message = "O preço deve ser maior que zero")
+    @Min(value = 1, message = "O preço deve ser maior que zero")
     private Double preco;
 
     @Column(name = "descricao", nullable = false)
@@ -50,7 +50,7 @@ public class Produto {
     private String descricao;
 
     @Column(name = "imagem", nullable = false)
-    @Size (max = 500, message = "O link deve ter no máximo 500 caracteres")
+    @Size(max = 500, message = "O link deve ter no máximo 500 caracteres")
     @NotBlank(message = "Adicione uma imagem a o produto")
     private String imagem;
 
@@ -76,13 +76,9 @@ public class Produto {
 
 
     public static Produto newProduto(String nome, String categoria, Integer quantidadeDisponivel, Double preco, String descricao, String imagem) {
-        if (quantidadeDisponivel <= 0) {
-            throw new IllegalArgumentException("A quantidade disponível deve ser maior que zero.");
-        }
-        if (preco < 0) {
-            throw new IllegalArgumentException("O preço deve ser maior ou igual a zero.");
-        }
+
         return new Produto(nome, categoria, quantidadeDisponivel, preco, descricao, imagem);
     }
+
 
 }

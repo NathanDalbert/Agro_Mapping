@@ -19,8 +19,7 @@ public class ItemPedido {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_item_pedido", nullable = false)
-    private UUID idIemPedido;
-
+    private UUID idItemPedido;
     @Column(name = "preco_unitario", nullable = false)
     private double precoUnitario;
 
@@ -35,13 +34,19 @@ public class ItemPedido {
     @JoinColumn(name = "id_produto")
     private Produto produto;
 
+
+    public double getValorTotalItem() {
+        return precoUnitario * quantidade;
+    }
+
+
     private ItemPedido(double precoUnitario, Integer quantidade) {
         this.precoUnitario = precoUnitario;
         this.quantidade = quantidade;
     }
+
+
     public static ItemPedido newItemPedido(double precoUnitario, Integer quantidade) {
         return new ItemPedido(precoUnitario, quantidade);
     }
-
-
 }

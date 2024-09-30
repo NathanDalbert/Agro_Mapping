@@ -47,22 +47,20 @@ public class Usuario {
     private LocalDate dataDeNascimento;
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
-    private List<Contato> contatos;
+    private List<Contato> contatos = new ArrayList<>();
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
-    private List<Produto> produtos;
+    private List<Produto> produtos = new ArrayList<>();
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Pedido> pedidos ;
+    private List<Pedido> pedidos = new ArrayList<>();
 
     private Usuario(String nome, String email, String senha, LocalDate dataDeNascimento) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.dataDeNascimento = dataDeNascimento;
-        this.contatos = new ArrayList<>();
-        this.produtos = new ArrayList<>();
-        this.pedidos = new ArrayList<>();
+
 
     }
 

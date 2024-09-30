@@ -34,6 +34,8 @@ public class Pedido {
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemPedido> Itempedidos;
 
 
     private Pedido(LocalDate dataPedido, Double valorTotal) {
@@ -41,9 +43,15 @@ public class Pedido {
         this.valorTotal = valorTotal;
     }
 
+
     public static Pedido newPedido(LocalDate dataPedido, Double valorTotal) {
         return new Pedido(dataPedido, valorTotal);
     }
 
 
+    public Double calcularValorTotal() {
+        return Itempedidos.stream()
+                .mapToDouble(ItemPedido::getValorTotalItem)
+                .sum();
+    }
 }

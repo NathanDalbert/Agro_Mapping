@@ -36,14 +36,9 @@ public class UsuarioMapper {
                 usuario.getNome(),
                 usuario.getEmail(),
                 formattedDate,
-                usuario.getContatos()
-                        .stream()
-                        .map(contatoServiceMapper::toContatoResponseDTO)
-                        .toList(),
-                usuario.getProdutos()
-                        .stream()
-                        .map(produtoMapper::toProdutoResponseDTO)
-                        .toList()
+                usuario.getContatos().stream().map(contatoServiceMapper::toContatoResponseDTO).toList(),
+                usuario.getProdutos().stream().map(produtoMapper::toProdutoResponseDTO).toList()
+
         );
     }
 
