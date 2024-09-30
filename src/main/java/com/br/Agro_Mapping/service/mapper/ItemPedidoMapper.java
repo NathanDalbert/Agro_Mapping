@@ -17,7 +17,7 @@ public class ItemPedidoMapper {
 
     public ItemPedidoResponseDTO toItemPedidoResponseDTO(ItemPedido itemPedido) {
         return new ItemPedidoResponseDTO(
-                itemPedido.getIdIemPedido(),
+                itemPedido.getIdItemPedido(),
                 itemPedido.getPrecoUnitario(),
                 itemPedido.getQuantidade()
         );
