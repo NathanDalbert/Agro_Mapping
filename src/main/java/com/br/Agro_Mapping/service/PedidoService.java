@@ -2,7 +2,9 @@ package com.br.Agro_Mapping.service;
 
 import com.br.Agro_Mapping.dto.request.PedidoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.PedidoResponseDTO;
+import com.br.Agro_Mapping.model.ItemPedido;
 import com.br.Agro_Mapping.model.Usuario;
+import com.br.Agro_Mapping.repository.ItemPedidoRepository;
 import com.br.Agro_Mapping.repository.UsuarioRepository;
 import com.br.Agro_Mapping.service.mapper.PedidoMapper;
 import com.br.Agro_Mapping.model.Pedido;
@@ -17,6 +19,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class PedidoService implements PedidoServiceInterface {
+
+    private  final ItemPedidoRepository itemPedidoRepository;
 
     private final PedidoRepository pedidoRepository;
 
@@ -33,7 +37,14 @@ public class PedidoService implements PedidoServiceInterface {
         Pedido pedido = pedidoMapper.toPedido(pedidoRequestDTO,usuario);
         pedido.setUsuario(usuario);
         Pedido pedidoSalvo = pedidoRepository.save(pedido);
+
+        for(ItemPedido item: pedido.getItempedidos()){
+            item.setPedido(pedidoSalvo);
+            itemPedidoRepository.save(item);
+        }
         return pedidoMapper.toPedidoResponseDTO(pedidoSalvo);
+
+
 
     }
 
