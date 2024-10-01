@@ -22,8 +22,7 @@ public class ContatoController implements ContatoSwagger {
     @PostMapping
     public ResponseEntity<ContatoResponseDTO> criarContato(
             @Valid @RequestBody ContatoRequestDTO contatoRequestDTO,
-            @RequestParam UUID usuarioId
-    ) {
+            @RequestParam UUID usuarioId) {
         ContatoResponseDTO contatoResponseDTO = contatoServiceInterface.criarContato(contatoRequestDTO, usuarioId);
         return ResponseEntity.ok(contatoResponseDTO);
     }

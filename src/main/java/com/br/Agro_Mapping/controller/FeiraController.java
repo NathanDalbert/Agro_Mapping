@@ -26,7 +26,7 @@ public class FeiraController implements FeiraSwagger {
         return ResponseEntity.ok(feiraResponseDTO);
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<List<FeiraResponseDTO>> listarFeiras() {
         List<FeiraResponseDTO> feiras = feiraServiceInterface.listarFeiras();
         return ResponseEntity.ok(feiras);

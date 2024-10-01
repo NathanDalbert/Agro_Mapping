@@ -41,7 +41,6 @@ public class RestExceptionHandler {
         body.put("error", status.getReasonPhrase());
         body.put("message", message);
         body.put("path", request.getDescription(false).replace("uri=", ""));
-
         return new ResponseEntity<>(body, status);
     }
 }
