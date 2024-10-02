@@ -3,5 +3,5 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public record PedidoRequestDTO(LocalDate dataPedido , Double valorTotal, UUID idUsuario,  List<ItemPedidoRequestDTO> itens, UUID IdUsuario
+public record PedidoRequestDTO(LocalDate dataPedido , Double valorTotal, UUID idUsuario,  List<ItemPedidoRequestDTO> itens
 ) {}

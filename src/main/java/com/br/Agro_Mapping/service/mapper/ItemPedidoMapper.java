@@ -11,12 +11,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ItemPedidoMapper {
 
-    public ItemPedido toItemPedido(ItemPedidoRequestDTO itemPedidoRequestDTO, Pedido pedido, Produto produto) {
+    public ItemPedido toItemPedido(ItemPedidoRequestDTO itemPedidoRequestDTO, Produto produto) {
         ItemPedido itemPedido = ItemPedido.newItemPedido(
                 itemPedidoRequestDTO.precoUnitario(),
                 itemPedidoRequestDTO.quantidade()
         );
-        itemPedido.setPedido(pedido);
         itemPedido.setProduto(produto);
         return itemPedido;
     }
