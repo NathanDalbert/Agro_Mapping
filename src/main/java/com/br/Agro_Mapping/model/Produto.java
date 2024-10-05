@@ -1,7 +1,6 @@
 package com.br.Agro_Mapping.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -34,11 +33,8 @@ public class Produto {
     @NotBlank(message = "Digite uma categoria para o produto")
     private String categoria;
 
-
-
     @Column(name = "preco", nullable = false)
     @NotNull(message = "Digite o preço do produto")
-    @Min(value = 1, message = "O preço deve ser maior que zero")
     private Double preco;
 
     @Column(name = "descricao", nullable = false)
@@ -48,7 +44,7 @@ public class Produto {
 
     @Column(name = "imagem", nullable = false)
     @Size(max = 500, message = "O link deve ter no máximo 500 caracteres")
-    @NotBlank(message = "Adicione uma imagem a o produto")
+    @NotBlank(message = "Adicione uma imagem ao produto")
     private String imagem;
 
     @ManyToOne
@@ -58,27 +54,23 @@ public class Produto {
     @OneToMany(mappedBy = "produto")
     private List<ItemPedido> itensPedido;
 
-    @OneToOne(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Estoque estoque;
-
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-    private Produto(String nome, String categoria,  Double preco, String descricao, String imagem) {
+    @ManyToOne
+    @JoinColumn(name = "id_estoque")
+    private Estoque estoque;
+
+    private Produto(String nome, String categoria, Double preco, String descricao, String imagem) {
         this.nome = nome;
         this.categoria = categoria;
-
         this.preco = preco;
         this.descricao = descricao;
         this.imagem = imagem;
     }
 
-
     public static Produto newProduto(String nome, String categoria, Double preco, String descricao, String imagem) {
-
         return new Produto(nome, categoria, preco, descricao, imagem);
     }
-
-
 }

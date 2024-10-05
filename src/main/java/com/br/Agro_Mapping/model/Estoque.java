@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -23,14 +24,20 @@ public class Estoque {
     @Column(name = "id_estoque")
     private UUID idEstoque;
 
-
     @NotNull(message = "Digite a quantidade do produto")
     @Min(value = 1, message = "A quantidade deve ser maior que zero")
     @Column(name = "quantidade", nullable = false)
     private Integer quantidade;
 
     @OneToMany(mappedBy = "estoque")
-    @JoinColumn(name = "id_produto", referencedColumnName = "id_produto")
-    private Produto produto;
+    private List<Produto> produtos;
 
+    private Estoque(Integer quantidade, List<Produto> produtos) {
+        this.quantidade = quantidade;
+        this.produtos = produtos;
+    }
+
+    public static Estoque newEstoque(Integer quantidade, List<Produto> produtos) {
+        return new Estoque(quantidade, produtos);
+    }
 }

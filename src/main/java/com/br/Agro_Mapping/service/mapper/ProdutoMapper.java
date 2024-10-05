@@ -9,8 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProdutoMapper {
 
-
-
     public Produto toProduto(ProdutoRequestDTO produtoRequestDTO, Usuario usuario) {
         Produto produto = Produto.newProduto(
                 produtoRequestDTO.nome(),
@@ -21,17 +19,21 @@ public class ProdutoMapper {
         );
         produto.setUsuario(usuario);
         return produto;
-
     }
+
     public ProdutoResponseDTO toProdutoResponseDTO(Produto produto) {
+
+        Integer quantidade = (produto.getEstoque() != null) ? produto.getEstoque().getQuantidade() : null;
+
+
         return new ProdutoResponseDTO(
                 produto.getIdProduto(),
                 produto.getNome(),
                 produto.getCategoria(),
                 produto.getPreco(),
                 produto.getDescricao(),
-                produto.getImagem()
+                produto.getImagem(),
+                quantidade
         );
     }
-
 }
