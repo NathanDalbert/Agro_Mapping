@@ -58,6 +58,9 @@ public class Produto {
     @OneToMany(mappedBy = "produto")
     private List<ItemPedido> itensPedido;
 
+    @OneToOne(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Estoque estoque;
+
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
