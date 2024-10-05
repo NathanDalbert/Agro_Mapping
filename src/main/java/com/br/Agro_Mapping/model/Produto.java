@@ -34,10 +34,7 @@ public class Produto {
     @NotBlank(message = "Digite uma categoria para o produto")
     private String categoria;
 
-    @Column(name = "quantidade_disponivel", nullable = false)
-    @NotNull(message = "Digite a quantidade disponível do produto")
-    @Min(value = 1, message = "A quantidade disponível deve ser maior que zero")
-    private Integer quantidadeDisponivel;
+
 
     @Column(name = "preco", nullable = false)
     @NotNull(message = "Digite o preço do produto")
@@ -65,19 +62,19 @@ public class Produto {
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-    private Produto(String nome, String categoria, Integer quantidadeDisponivel, Double preco, String descricao, String imagem) {
+    private Produto(String nome, String categoria,  Double preco, String descricao, String imagem) {
         this.nome = nome;
         this.categoria = categoria;
-        this.quantidadeDisponivel = quantidadeDisponivel;
+
         this.preco = preco;
         this.descricao = descricao;
         this.imagem = imagem;
     }
 
 
-    public static Produto newProduto(String nome, String categoria, Integer quantidadeDisponivel, Double preco, String descricao, String imagem) {
+    public static Produto newProduto(String nome, String categoria, Double preco, String descricao, String imagem) {
 
-        return new Produto(nome, categoria, quantidadeDisponivel, preco, descricao, imagem);
+        return new Produto(nome, categoria, preco, descricao, imagem);
     }
 
 

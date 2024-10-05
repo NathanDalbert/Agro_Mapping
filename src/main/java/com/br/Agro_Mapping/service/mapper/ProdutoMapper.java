@@ -15,7 +15,6 @@ public class ProdutoMapper {
         Produto produto = Produto.newProduto(
                 produtoRequestDTO.nome(),
                 produtoRequestDTO.categoria(),
-                produtoRequestDTO.quantidadeDisponivel(),
                 produtoRequestDTO.preco(),
                 produtoRequestDTO.descricao(),
                 produtoRequestDTO.imagem()
@@ -31,7 +30,6 @@ public class ProdutoMapper {
                 produto.getCategoria(),
                 produto.getPreco(),
                 produto.getDescricao(),
-                produto.getQuantidadeDisponivel(),
                 produto.getImagem()
         );
     }

@@ -58,7 +58,6 @@ public class ProdutoService implements ProdutoServiceInterface {
         produto.setCategoria(produtoRequestDTO.categoria());
         produto.setPreco(produtoRequestDTO.preco());
         produto.setDescricao(produtoRequestDTO.descricao());
-        produto.setQuantidadeDisponivel(produtoRequestDTO.quantidadeDisponivel());
         produto.setImagem(produtoRequestDTO.imagem());
 
         Produto produtoAtualizado = produtoRepository.save(produto);
