@@ -3,12 +3,18 @@ AgroMapping é uma aplicação web que mapeia feiras agrícolas e facilita a res
 
 # Funcionalidades
 Mapeamento de Feiras: Exibe um mapa com a localização de feiras e produtores próximos.
+
 Reserva de Produtos: Permite que os usuários façam reservas de frutas e verduras disponíveis nas feiras.
+
 Busca de Produtos: Ferramenta de busca que ajuda o usuário a encontrar produtos específicos em feiras cadastradas.
+
 Gestão de Reservas: Gerencia o processo de reserva, permitindo visualizar, editar e cancelar reservas.
+
 Integração com Swagger: APIs documentadas para facilitar o desenvolvimento e integração com outras aplicações.
 
 # Tecnologias Utilizadas
 Backend: Java com Spring Framework
+
 Banco de Dados: PostgreSQL
+
 APIs: Swagger para documentação e integração
