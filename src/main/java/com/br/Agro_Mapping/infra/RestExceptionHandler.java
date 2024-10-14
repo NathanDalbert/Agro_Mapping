@@ -14,7 +14,7 @@ import java.util.Map;
 @ControllerAdvice
 public class RestExceptionHandler {
 
-    // Handler para UsuarioNotFoundException
+
     @ExceptionHandler(UsuarioNotFoundException.class)
     public ResponseEntity<Object> handleUsuarioNotFoundException(UsuarioNotFoundException ex, WebRequest request) {
         return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND, request);

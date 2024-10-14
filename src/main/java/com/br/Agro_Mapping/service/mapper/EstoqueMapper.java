@@ -13,7 +13,7 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class EstoqueMapper {
 
-    // Método para converter EstoqueRequestDTO em Estoque
+
     public Estoque toEstoque(EstoqueRequestDTO dto, Produto produto) {
         Estoque estoque = new Estoque();
         estoque.setQuantidade(dto.quantidade());

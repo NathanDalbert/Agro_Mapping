@@ -23,7 +23,7 @@ public class ProdutoMapper {
 
     public ProdutoResponseDTO toProdutoResponseDTO(Produto produto) {
 
-        Integer quantidade = (produto.getEstoque() != null) ? produto.getEstoque().getQuantidade() : null;
+
 
 
         return new ProdutoResponseDTO(
@@ -32,8 +32,8 @@ public class ProdutoMapper {
                 produto.getCategoria(),
                 produto.getPreco(),
                 produto.getDescricao(),
-                produto.getImagem(),
-                quantidade
+                produto.getImagem()
+
         );
     }
 }
