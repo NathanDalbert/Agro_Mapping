@@ -34,11 +34,6 @@ public class Produto {
     @NotBlank(message = "Digite uma categoria para o produto")
     private String categoria;
 
-    @Column(name = "quantidade_disponivel", nullable = false)
-    @NotNull(message = "Digite a quantidade disponível do produto")
-    @Min(value = 1, message = "A quantidade disponível deve ser maior que zero")
-    private Integer quantidadeDisponivel;
-
     @Column(name = "preco", nullable = false)
     @NotNull(message = "Digite o preço do produto")
     @Min(value = 1, message = "O preço deve ser maior que zero")
@@ -51,7 +46,7 @@ public class Produto {
 
     @Column(name = "imagem", nullable = false)
     @Size(max = 500, message = "O link deve ter no máximo 500 caracteres")
-    @NotBlank(message = "Adicione uma imagem a o produto")
+    @NotBlank(message = "Adicione uma imagem ao produto")
     private String imagem;
 
     @ManyToOne
@@ -61,24 +56,22 @@ public class Produto {
     @OneToMany(mappedBy = "produto")
     private List<ItemPedido> itensPedido;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-    private Produto(String nome, String categoria, Integer quantidadeDisponivel, Double preco, String descricao, String imagem) {
+    @OneToOne(mappedBy = "produto", cascade = CascadeType.ALL)
+    private Estoque estoque;
+
+    private Produto(String nome, String categoria, Double preco, String descricao, String imagem) {
         this.nome = nome;
         this.categoria = categoria;
-        this.quantidadeDisponivel = quantidadeDisponivel;
         this.preco = preco;
         this.descricao = descricao;
         this.imagem = imagem;
     }
 
-
-    public static Produto newProduto(String nome, String categoria, Integer quantidadeDisponivel, Double preco, String descricao, String imagem) {
-
-        return new Produto(nome, categoria, quantidadeDisponivel, preco, descricao, imagem);
+    public static Produto newProduto(String nome, String categoria, Double preco, String descricao, String imagem) {
+        return new Produto(nome, categoria, preco, descricao, imagem);
     }
-
-
 }
