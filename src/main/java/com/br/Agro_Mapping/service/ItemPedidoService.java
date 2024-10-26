@@ -66,7 +66,6 @@ public class ItemPedidoService implements ItemPedidoServiceInterface {
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado com o ID: " + itemPedidoRequestDTO.idProduto()));
 
 
-        itemPedido.setPrecoUnitario(itemPedidoRequestDTO.precoUnitario());
         itemPedido.setQuantidade(itemPedidoRequestDTO.quantidade());
         itemPedido.setProduto(produto);
 
