@@ -32,8 +32,4 @@ public class Estoque {
     @JoinColumn(name = "id_produto", nullable = false)
     private Produto produto;
 
-    public Estoque(Integer quantidadeDisponivel, Produto produto) {
-        this.quantidadeDisponivel = quantidadeDisponivel;
-        this.produto = produto;
-    }
 }
