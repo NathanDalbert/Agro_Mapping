@@ -1,21 +1,32 @@
 package com.br.Agro_Mapping.conf;
 
-import io.swagger.v3.oas.models.ExternalDocumentation;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.ExternalDocumentation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-
-
 @Configuration
-
 public class SwaggerConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
+
+        SecurityScheme securityScheme = new SecurityScheme()
+                .name("Authorization")
+                .type(SecurityScheme.Type.HTTP)
+                .scheme("bearer")
+                .bearerFormat("JWT");
+
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList("Authorization");
+
         return new OpenAPI()
+                .components(new Components().addSecuritySchemes("Authorization", securityScheme))
+                .addSecurityItem(securityRequirement)
                 .info(new Info()
                         .title("Agro Mapping API")
                         .description("Documentação da API para o projeto Agro Mapping")
