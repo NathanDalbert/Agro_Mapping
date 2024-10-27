@@ -13,14 +13,8 @@ import java.util.UUID;
 
 public interface UsuarioSwagger {
 
-    @Operation(summary = "Cria um novo usuário")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Usuário criado com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    })
-    @PostMapping
-    ResponseEntity<UsuarioResponseDTO> criarUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO);
+
+
 
     @Operation(summary = "Lista todos os usuários")
     @ApiResponses(value = {

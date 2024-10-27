@@ -1,5 +1,6 @@
 package com.br.Agro_Mapping.infra.security;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,26 +17,27 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class SecurityConfigurations {
 
-    @Autowired
-    private SecurityFilter securityFilter;
+
+    private final SecurityFilter securityFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable()) // Desabilita CSRF para APIs REST
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(sessionManagement -> sessionManagement
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Utiliza sessão sem estado
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll() // Permite acesso livre ao login
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll() // Permite acesso livre ao registro
-                        .requestMatchers(HttpMethod.GET, "/produto/**").permitAll() // Permite acesso livre a produtos
                         .requestMatchers(HttpMethod.POST, "/produto").hasRole("SELLER") // Acesso restrito a vendedores
                         .requestMatchers(HttpMethod.PUT, "/produto/**").hasRole("SELLER") // Atualizações apenas para vendedores
                         .requestMatchers(HttpMethod.DELETE, "/produto/**").hasRole("SELLER") // Deleções apenas para vendedores
                         .requestMatchers("/admin/**").hasRole("ADMIN") // Acesso restrito a admin
-                        .requestMatchers("/user/**").hasRole("USER") // Acesso restrito a usuários normais
+                        .requestMatchers("/usuario/**").hasRole("USER")
+                        .requestMatchers("/usario/").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Permite acesso ao Swagger
                         .anyRequest().authenticated()) // Qualquer outra requisição requer autenticação
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class) // Adiciona o filtro de segurança
@@ -49,6 +51,6 @@ public class SecurityConfigurations {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Configura o encoder de senha
+        return new BCryptPasswordEncoder();
     }
 }
