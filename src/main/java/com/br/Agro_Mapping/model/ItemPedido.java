@@ -20,8 +20,6 @@ public class ItemPedido {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_item_pedido", nullable = false)
     private UUID idItemPedido;
-    @Column(name = "preco_unitario", nullable = false)
-    private double precoUnitario;
 
     @Column(name = "quantidade", nullable = false)
     private Integer quantidade;
@@ -36,17 +34,16 @@ public class ItemPedido {
 
 
     public double getValorTotalItem() {
-        return precoUnitario * quantidade;
+        return produto.getPreco() * quantidade;
     }
 
 
-    private ItemPedido(double precoUnitario, Integer quantidade) {
-        this.precoUnitario = precoUnitario;
+    private ItemPedido(Integer quantidade) {
         this.quantidade = quantidade;
     }
 
 
-    public static ItemPedido newItemPedido(double precoUnitario, Integer quantidade) {
-        return new ItemPedido(precoUnitario, quantidade);
+    public static ItemPedido newItemPedido(Integer quantidade) {
+        return new ItemPedido(quantidade);
     }
 }

@@ -21,7 +21,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class UsuarioService implements UsuarioServiceInterface {
+public class UsuarioService implements UsuarioServiceInterface   {
 
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
@@ -35,7 +35,7 @@ public class UsuarioService implements UsuarioServiceInterface {
     @Transactional
     @Override
     public UsuarioResponseDTO criarUsuario(UsuarioRequestDTO usuarioRequestDTO) {
-        // Verifica se o e-mail já existe
+
         Optional<Usuario> existingUsuario = usuarioRepository.findByEmail(usuarioRequestDTO.email());
         if (existingUsuario.isPresent()) {
             throw new EmailAlreadyExistsException(usuarioRequestDTO.email());

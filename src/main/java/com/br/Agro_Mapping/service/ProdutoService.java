@@ -25,9 +25,9 @@ public class ProdutoService implements ProdutoServiceInterface {
     @Transactional
     @Override
     public ProdutoResponseDTO criarProduto(ProdutoRequestDTO produtoRequestDTO, UUID usuarioId) {
-        Usuario usuario= usuarioRepository.findById(usuarioId).orElseThrow(()-> new RuntimeException("Usuário não encontrado"));
+        Usuario usuario= usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        Produto produto = produtoMapper.toProduto(produtoRequestDTO,usuario);
+        Produto produto = produtoMapper.toProduto(produtoRequestDTO, usuario);
         produto.setUsuario(usuario);
         Produto produtoSalvo = produtoRepository.save(produto);
         return produtoMapper.toProdutoResponseDTO(produtoSalvo);
@@ -38,7 +38,7 @@ public class ProdutoService implements ProdutoServiceInterface {
     public List<ProdutoResponseDTO> listarProdutos() {
         List<Produto> produtos = produtoRepository.findAll();
         return produtos.stream()
-                .map(produtoMapper:: toProdutoResponseDTO)
+                .map(produtoMapper::toProdutoResponseDTO)
                 .toList();
     }
 
@@ -58,7 +58,6 @@ public class ProdutoService implements ProdutoServiceInterface {
         produto.setCategoria(produtoRequestDTO.categoria());
         produto.setPreco(produtoRequestDTO.preco());
         produto.setDescricao(produtoRequestDTO.descricao());
-        produto.setQuantidadeDisponivel(produtoRequestDTO.quantidadeDisponivel());
         produto.setImagem(produtoRequestDTO.imagem());
 
         Produto produtoAtualizado = produtoRepository.save(produto);

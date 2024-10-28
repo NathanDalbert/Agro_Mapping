@@ -4,12 +4,16 @@ import com.br.Agro_Mapping.dto.request.PedidoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.ItemPedidoResponseDTO;
 import com.br.Agro_Mapping.dto.responses.PedidoResponseDTO;
 import com.br.Agro_Mapping.dto.responses.ProdutoResponseDTO;
+import com.br.Agro_Mapping.model.ItemPedido;
 import com.br.Agro_Mapping.model.Pedido;
+import com.br.Agro_Mapping.model.Produto;
 import com.br.Agro_Mapping.model.Usuario;
+import com.br.Agro_Mapping.repository.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
@@ -17,11 +21,19 @@ public class PedidoMapper {
     private final UsuarioMapper usuarioMapper;
     private final ItemPedidoMapper itemPedidoMapper;
     private final ProdutoMapper produtoMapper;
+    private final ProdutoRepository produtoRepository; // Necessário para buscar produtos
 
     public Pedido toPedido(PedidoRequestDTO pedidoRequestDTO, Usuario usuario) {
         Pedido pedido = Pedido.newPedido(
                 pedidoRequestDTO.dataPedido(),
-                pedidoRequestDTO.valorTotal());
+                pedidoRequestDTO.itens().stream()
+                        .map(itemRequest -> {
+                            Produto produto = produtoRepository.findById(itemRequest.idProduto())
+                                    .orElseThrow(() -> new RuntimeException("Produto não encontrado com ID: " + itemRequest.idProduto()));
+                            return itemPedidoMapper.toItemPedido(itemRequest, produto);
+                        })
+                        .collect(Collectors.toList())
+        );
 
         pedido.setUsuario(usuario);
         return pedido;
