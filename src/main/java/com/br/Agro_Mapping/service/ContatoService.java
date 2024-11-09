@@ -6,11 +6,13 @@ import com.br.Agro_Mapping.exceptions.ContatoNotFoundException;
 import com.br.Agro_Mapping.exceptions.UsuarioNotFoundException;
 import com.br.Agro_Mapping.model.Contato;
 import com.br.Agro_Mapping.model.Usuario;
+import com.br.Agro_Mapping.model.enuns.UserRole;
 import com.br.Agro_Mapping.repository.ContatoRepository;
 import com.br.Agro_Mapping.repository.UsuarioRepository;
 import com.br.Agro_Mapping.service.mapper.ContatoServiceMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -27,9 +29,18 @@ public class ContatoService implements ContatoServiceInterface {
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new UsuarioNotFoundException(usuarioId));
 
-        Contato contato = contatoServiceMapper.toContato(contatoRequestDTO,usuario);
+
+        Contato contato = contatoServiceMapper.toContato(contatoRequestDTO, usuario);
+
 
         Contato contatoSalvo = contatoRepository.save(contato);
+
+
+        if (!"SELLER".equals(usuario.getUserRole())) {
+            usuario.setUserRole(UserRole.valueOf("SELLER"));
+            usuarioRepository.save(usuario);
+        }
+
 
         return contatoServiceMapper.toContatoResponseDTO(contatoSalvo);
     }

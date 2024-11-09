@@ -21,13 +21,7 @@
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
-    <developers>
-        <developer>
-            <id>seu-id</id>
-            <name>Seu Nome</name>
-            <email>seu-email@example.com</email>
-        </developer>
-    </developers>
+
     <scm>
         <connection>scm:git:https://github.com/seu-repo.git</connection>
         <developerConnection>scm:git:https://github.com/seu-repo.git</developerConnection>
