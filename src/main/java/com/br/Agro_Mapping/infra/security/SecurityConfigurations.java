@@ -1,7 +1,6 @@
 package com.br.Agro_Mapping.infra.security;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,33 +13,37 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfigurations {
 
-
     private final SecurityFilter securityFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable()) // Desabilita CSRF
                 .sessionManagement(sessionManagement -> sessionManagement
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sem sessão de estado
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll() // Permite acesso livre ao login
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll() // Permite acesso livre ao registro
-                        .requestMatchers(HttpMethod.POST, "/produto").hasRole("SELLER") // Acesso restrito a vendedores
-                        .requestMatchers(HttpMethod.PUT, "/produto/**").hasRole("SELLER") // Atualizações apenas para vendedores
-                        .requestMatchers(HttpMethod.DELETE, "/produto/**").hasRole("SELLER") // Deleções apenas para vendedores
-                        .requestMatchers("/admin/**").hasRole("ADMIN") // Acesso restrito a admin
-                        .requestMatchers("/usuario/**").hasRole("USER")
-                        .requestMatchers("/usario/").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Permite acesso ao Swagger
+                        .requestMatchers(HttpMethod.POST, "/api/login").permitAll() // Permite acesso livre ao login
+                        .requestMatchers(HttpMethod.POST, "/api/register").permitAll() // Permite acesso livre ao registro
+                        .requestMatchers(HttpMethod.POST, "/produto").hasRole("SELLER") // Restrito a vendedores
+                        .requestMatchers(HttpMethod.PUT, "/produto/**").hasRole("SELLER") // Restrito a vendedores
+                        .requestMatchers(HttpMethod.DELETE, "/produto/**").hasRole("SELLER") // Restrito a vendedores
+                        .requestMatchers("/admin/**").hasRole("ADMIN") // Restrito a admin
+                        .requestMatchers("/usuario/**").hasRole("USER") // Restrito a usuário
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Acesso ao Swagger
                         .anyRequest().authenticated()) // Qualquer outra requisição requer autenticação
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class) // Adiciona o filtro de segurança
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class) // Filtro de segurança
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .build();
     }
 
@@ -51,6 +54,19 @@ public class SecurityConfigurations {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(); // Codificador de senha
+    }
+
+    // Configuração de CORS
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // Adiciona a origem do frontend corretamente
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Inclui "OPTIONS" para requisição prévia
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept")); // Cabeçalhos permitidos
+        configuration.setAllowCredentials(true); // Permite credenciais (cookies, sessões, etc)
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration); // Aplica a configuração a todas as rotas
+        return source;
     }
 }
