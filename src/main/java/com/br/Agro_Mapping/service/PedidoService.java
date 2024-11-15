@@ -2,8 +2,10 @@ package com.br.Agro_Mapping.service;
 
 import com.br.Agro_Mapping.dto.request.PedidoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.PedidoResponseDTO;
+import com.br.Agro_Mapping.model.Estoque;
 import com.br.Agro_Mapping.model.ItemPedido;
 import com.br.Agro_Mapping.model.Usuario;
+import com.br.Agro_Mapping.repository.EstoqueRepository;
 import com.br.Agro_Mapping.repository.ItemPedidoRepository;
 import com.br.Agro_Mapping.repository.UsuarioRepository;
 import com.br.Agro_Mapping.service.mapper.PedidoMapper;
@@ -28,24 +30,34 @@ public class PedidoService implements PedidoServiceInterface {
 
     private final PedidoMapper pedidoMapper;
 
+    private final EstoqueRepository estoqueRepository;
+
 
     @Transactional
 
     public PedidoResponseDTO criarPedido(PedidoRequestDTO pedidoRequestDTO) {
         Usuario usuario = usuarioRepository.findById(pedidoRequestDTO.idUsuario())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o ID: " + pedidoRequestDTO.idUsuario()));
-        Pedido pedido = pedidoMapper.toPedido(pedidoRequestDTO,usuario);
+
+        Pedido pedido = pedidoMapper.toPedido(pedidoRequestDTO, usuario);
         pedido.setUsuario(usuario);
         Pedido pedidoSalvo = pedidoRepository.save(pedido);
 
-        for(ItemPedido item: pedido.getItempedidos()){
+        for (ItemPedido item : pedido.getItempedidos()) {
             item.setPedido(pedidoSalvo);
+
+            Estoque estoque = item.getProduto().getEstoque();
+            if (estoque.getQuantidadeDisponivel() < item.getQuantidade()) {
+                throw new RuntimeException("Estoque insuficiente para o produto: " + item.getProduto().getNome());
+            }
+
+            estoque.setQuantidadeDisponivel(estoque.getQuantidadeDisponivel() - item.getQuantidade());
+
             itemPedidoRepository.save(item);
+            estoqueRepository.save(estoque);
         }
+
         return pedidoMapper.toPedidoResponseDTO(pedidoSalvo);
-
-
-
     }
 
     @Transactional(readOnly = true)
@@ -69,8 +81,6 @@ public class PedidoService implements PedidoServiceInterface {
         Pedido pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado com o ID: " + id));
         pedido.setDataPedido(pedidoRequestDTO.dataPedido());
-        pedido.setValorTotal(pedidoRequestDTO.valorTotal());
-
         Pedido pedidoAtualizado = pedidoRepository.save(pedido);
 
         return pedidoMapper.toPedidoResponseDTO(pedidoAtualizado);

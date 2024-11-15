@@ -39,14 +39,17 @@ public class Pedido {
     private List<ItemPedido> Itempedidos = new ArrayList<>();
 
 
-    private Pedido(LocalDate dataPedido, Double valorTotal) {
+    private Pedido(LocalDate dataPedido, List<ItemPedido> itemPedidos) {
         this.dataPedido = dataPedido;
-        this.valorTotal = valorTotal;
+        this.Itempedidos = itemPedidos;
+        this.valorTotal = calcularValorTotal();
     }
 
 
-    public static Pedido newPedido(LocalDate dataPedido, Double valorTotal) {
-        return new Pedido(dataPedido, valorTotal);
+    public static Pedido newPedido(LocalDate dataPedido, List<ItemPedido> itemPedidos) {
+        Pedido pedido = new Pedido(dataPedido, itemPedidos);
+        itemPedidos.forEach(item -> item.setPedido(pedido));
+        return pedido;
     }
 
 

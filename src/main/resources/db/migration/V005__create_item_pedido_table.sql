@@ -1,6 +1,5 @@
 CREATE TABLE item_pedido (
     id_item_pedido UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    preco_unitario NUMERIC(10, 2) NOT NULL CHECK (preco_unitario >= 0),
     quantidade INTEGER NOT NULL CHECK (quantidade > 0),
     id_pedido UUID,
     id_produto UUID,
