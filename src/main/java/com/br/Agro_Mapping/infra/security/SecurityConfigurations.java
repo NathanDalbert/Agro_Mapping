@@ -35,6 +35,8 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers(HttpMethod.POST, "/api/login").permitAll() // Permite acesso livre ao login
                         .requestMatchers(HttpMethod.POST, "/api/register").permitAll() // Permite acesso livre ao registro
+                        .requestMatchers(HttpMethod.GET, "/produto/buscarProdutoPorNome/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/feiras").permitAll()
                         .requestMatchers(HttpMethod.POST, "/produto").hasRole("SELLER") // Restrito a vendedores
                         .requestMatchers(HttpMethod.PUT, "/produto/**").hasRole("SELLER") // Restrito a vendedores
                         .requestMatchers(HttpMethod.DELETE, "/produto/**").hasRole("SELLER") // Restrito a vendedores
