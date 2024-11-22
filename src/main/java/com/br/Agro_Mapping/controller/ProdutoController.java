@@ -5,6 +5,7 @@ import com.br.Agro_Mapping.dto.request.ProdutoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.ProdutoResponseDTO;
 import com.br.Agro_Mapping.service.ProdutoServiceInterface;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
