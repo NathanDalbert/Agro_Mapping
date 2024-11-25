@@ -42,6 +42,9 @@ public class SecurityConfigurations {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/usuario/**").hasRole("USER")
                         .requestMatchers("/contato").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/produto/buscarProdutoPorNome/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/feiras").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/feiras").hasRole("ADMIN")
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Acesso ao Swagger
                         .anyRequest().authenticated()) // Qualquer outra requisição requer autenticação
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class) // Filtro de segurança
