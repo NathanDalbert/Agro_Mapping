@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api")
 
@@ -41,11 +43,12 @@ public class AutenticacaoController {
         if (username == null) {
             return ResponseEntity.badRequest().body("Usuário não encontrado.");
         }
-        var usuario = usuarioRepository.findByEmail(data.email()).get();
+
+        var usuario = usuarioRepository.findByEmail(data.email())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
         var auth = authenticationManager.authenticate(username);
 
         boolean isPasswordMatch = passwordEncoder.matches(data.senha(), usuario.getSenha());
-
 
         if (!isPasswordMatch) {
             return ResponseEntity.badRequest().body("Senha incorreta.");
@@ -53,19 +56,23 @@ public class AutenticacaoController {
 
         var token = tokenService.generateToken((Usuario) auth.getPrincipal());
 
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        return ResponseEntity.ok(Map.of(
+                "token", token,
+                "usuarioId", usuario.getIdUsuario() // Retornando o ID do usuário no login
+        ));
     }
 
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data) {
 
+        // Verificar se o email já está em uso
         if (this.usuarioRepository.findByEmail(data.email()).isPresent()) {
             return ResponseEntity.badRequest().body("Email já está em uso.");
         }
 
-
-        if (data == null || data.dataDeNascimento() == null) {
+        // Validar os dados obrigatórios
+        if (data.nome() == null || data.dataDeNascimento() == null) {
             return ResponseEntity.badRequest().body("Nome e data de nascimento são obrigatórios.");
         }
 
@@ -73,8 +80,10 @@ public class AutenticacaoController {
             return ResponseEntity.badRequest().body("A senha não pode ser nula.");
         }
 
+        // Criptografar a senha
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.senha());
 
+        // Criar o usuário
         Usuario user = new Usuario();
         user.setNome(data.nome());
         user.setEmail(data.email());
@@ -82,11 +91,16 @@ public class AutenticacaoController {
         user.setDataDeNascimento(data.dataDeNascimento());
         user.setUserRole(data.userRole());
 
+        // Salvar o usuário no banco de dados
+        Usuario usuarioSalvo = this.usuarioRepository.save(user);
 
-        this.usuarioRepository.save(user);
-
-        return ResponseEntity.ok("Usuário registrado com sucesso.");
+        // Retornar o ID do usuário
+        return ResponseEntity.ok(Map.of(
+                "message", "Usuário registrado com sucesso.",
+                "usuarioId", usuarioSalvo.getIdUsuario()
+        ));
     }
+
 
 
 }

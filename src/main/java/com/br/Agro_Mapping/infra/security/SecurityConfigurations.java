@@ -31,15 +31,22 @@ public class SecurityConfigurations {
         return http
                 .csrf(csrf -> csrf.disable()) // Desabilita CSRF
                 .sessionManagement(sessionManagement -> sessionManagement
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sem sessão de estado
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers(HttpMethod.POST, "/api/login").permitAll() // Permite acesso livre ao login
-                        .requestMatchers(HttpMethod.POST, "/api/register").permitAll() // Permite acesso livre ao registro
-                        .requestMatchers(HttpMethod.POST, "/produto").hasRole("SELLER") // Restrito a vendedores
-                        .requestMatchers(HttpMethod.PUT, "/produto/**").hasRole("SELLER") // Restrito a vendedores
-                        .requestMatchers(HttpMethod.DELETE, "/produto/**").hasRole("SELLER") // Restrito a vendedores
-                        .requestMatchers("/admin/**").hasRole("ADMIN") // Restrito a admin
-                        .requestMatchers("/usuario/**").hasRole("USER") // Restrito a usuário
+                        .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/contato").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/produto").hasRole("SELLER")
+                        .requestMatchers(HttpMethod.PUT, "/produto/**").hasRole("SELLER")
+                        .requestMatchers(HttpMethod.PUT, "/usuario/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.PUT, "/usuario/**").hasRole("SELLER")
+                        .requestMatchers(HttpMethod.DELETE, "/produto/**").hasRole("SELLER")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/usuario/**").hasRole("USER")
+                        .requestMatchers("/contato").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/produto/buscarProdutoPorNome/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/feiras").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/feiras").hasRole("ADMIN")
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Acesso ao Swagger
                         .anyRequest().authenticated()) // Qualquer outra requisição requer autenticação
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class) // Filtro de segurança

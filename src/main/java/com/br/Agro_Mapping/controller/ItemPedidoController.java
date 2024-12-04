@@ -15,11 +15,9 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/itemPedido")
-
 public class ItemPedidoController implements ItemPedidoSwagger {
 
     private final ItemPedidoServiceInterface itemPedidoServiceInterface;
-
 
     @PostMapping
     public ResponseEntity<ItemPedidoResponseDTO> criarItemPedido(@Valid @RequestBody ItemPedidoRequestDTO itemPedidoRequestDTO) {
@@ -33,14 +31,12 @@ public class ItemPedidoController implements ItemPedidoSwagger {
         return ResponseEntity.ok(itemPedidos);
     }
 
-
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<ItemPedidoResponseDTO> atualizarItemPedido(@PathVariable UUID id,
                                                                      @Valid @RequestBody ItemPedidoRequestDTO itemPedidoRequestDTO) {
         ItemPedidoResponseDTO itemPedidoAtualizado = itemPedidoServiceInterface.atualizarItemPedido(id, itemPedidoRequestDTO);
         return ResponseEntity.ok(itemPedidoAtualizado);
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarItemPedido(@PathVariable UUID id) {

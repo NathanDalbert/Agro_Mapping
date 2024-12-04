@@ -4,13 +4,15 @@ import com.br.Agro_Mapping.dto.request.ItemPedidoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.ItemPedidoResponseDTO;
 import com.br.Agro_Mapping.model.ItemPedido;
 import com.br.Agro_Mapping.model.Produto;
+import com.br.Agro_Mapping.model.Usuario;  // Importando a classe Usuario
 import com.br.Agro_Mapping.repository.ItemPedidoRepository;
 import com.br.Agro_Mapping.repository.ProdutoRepository;
+import com.br.Agro_Mapping.repository.UsuarioRepository;  // Importando o repositório de Usuario
 import com.br.Agro_Mapping.service.mapper.ItemPedidoMapper;
 import com.br.Agro_Mapping.service.mapper.ProdutoMapper;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +23,7 @@ public class ItemPedidoService implements ItemPedidoServiceInterface {
 
     private final ItemPedidoRepository itemPedidoRepository;
     private final ProdutoRepository produtoRepository;
+    private final UsuarioRepository usuarioRepository;  // Repositório de Usuario
     private final ItemPedidoMapper itemPedidoMapper;
     private final ProdutoMapper produtoMapper;
 
@@ -31,11 +34,13 @@ public class ItemPedidoService implements ItemPedidoServiceInterface {
         Produto produto = produtoRepository.findById(itemPedidoRequestDTO.idProduto())
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado com o ID: " + itemPedidoRequestDTO.idProduto()));
 
+        Usuario usuario = usuarioRepository.findById(itemPedidoRequestDTO.idUsuario())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o ID: " + itemPedidoRequestDTO.idUsuario()));  // Recuperando o Usuario
 
-        ItemPedido itemPedido = itemPedidoMapper.toItemPedido(itemPedidoRequestDTO, produto);
+        ItemPedido itemPedido = itemPedidoMapper.toItemPedido(itemPedidoRequestDTO, produto, usuario);  // Passando o usuario para o mapper
         ItemPedido itemPedidoSalvo = itemPedidoRepository.save(itemPedido);
 
-        return itemPedidoMapper.toItemPedidoResponseDTO(itemPedidoSalvo, produtoMapper.toProdutoResponseDTO(produto));
+        return itemPedidoMapper.toItemPedidoResponseDTO(itemPedidoSalvo, produtoMapper.toProdutoResponseDTO(produto), usuario.getIdUsuario());  // Passando o idUsuario
     }
 
     @Transactional
@@ -45,7 +50,7 @@ public class ItemPedidoService implements ItemPedidoServiceInterface {
         return itemPedidos.stream()
                 .map(item -> {
                     Produto produto = item.getProduto();
-                    return itemPedidoMapper.toItemPedidoResponseDTO(item, produtoMapper.toProdutoResponseDTO(produto));
+                    return itemPedidoMapper.toItemPedidoResponseDTO(item, produtoMapper.toProdutoResponseDTO(produto), item.getUsuario().getIdUsuario());  // Passando o idUsuario
                 })
                 .toList();
     }
@@ -65,13 +70,14 @@ public class ItemPedidoService implements ItemPedidoServiceInterface {
         Produto produto = produtoRepository.findById(itemPedidoRequestDTO.idProduto())
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado com o ID: " + itemPedidoRequestDTO.idProduto()));
 
+        Usuario usuario = usuarioRepository.findById(itemPedidoRequestDTO.idUsuario())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o ID: " + itemPedidoRequestDTO.idUsuario()));  // Recuperando o Usuario
 
-        itemPedido.setPrecoUnitario(itemPedidoRequestDTO.precoUnitario());
         itemPedido.setQuantidade(itemPedidoRequestDTO.quantidade());
         itemPedido.setProduto(produto);
-
+        itemPedido.setUsuario(usuario);  // Atualizando o usuário
 
         ItemPedido itemPedidoAtualizado = itemPedidoRepository.save(itemPedido);
-        return itemPedidoMapper.toItemPedidoResponseDTO(itemPedidoAtualizado, produtoMapper.toProdutoResponseDTO(produto));
+        return itemPedidoMapper.toItemPedidoResponseDTO(itemPedidoAtualizado, produtoMapper.toProdutoResponseDTO(produto), usuario.getIdUsuario());  // Passando o idUsuario
     }
 }
