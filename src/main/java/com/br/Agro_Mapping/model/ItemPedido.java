@@ -33,7 +33,7 @@ public class ItemPedido {
     private Produto produto;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario")  // Adicionando o relacionamento com Usuario
+    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
     public double getValorTotalItem() {

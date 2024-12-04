@@ -21,7 +21,7 @@ public class PedidoMapper {
     private final UsuarioMapper usuarioMapper;
     private final ItemPedidoMapper itemPedidoMapper;
     private final ProdutoMapper produtoMapper;
-    private final ProdutoRepository produtoRepository;
+    private final ProdutoRepository produtoRepository; // Necessário para buscar produtos
 
     public Pedido toPedido(PedidoRequestDTO pedidoRequestDTO, Usuario usuario) {
         Pedido pedido = Pedido.newPedido(
@@ -41,7 +41,6 @@ public class PedidoMapper {
         pedido.setUsuario(usuario);
         return pedido;
     }
-
 
     public PedidoResponseDTO toPedidoResponseDTO(Pedido pedido) {
         List<ItemPedidoResponseDTO> itens = pedido.getItempedidos().stream().map(item -> {
