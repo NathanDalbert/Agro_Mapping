@@ -38,6 +38,8 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/produto").hasRole("SELLER")
                         .requestMatchers(HttpMethod.PUT, "/produto/**").hasRole("SELLER")
+                        .requestMatchers(HttpMethod.PUT, "/usuario/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.PUT, "/usuario/**").hasRole("SELLER")
                         .requestMatchers(HttpMethod.DELETE, "/produto/**").hasRole("SELLER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/usuario/**").hasRole("USER")
