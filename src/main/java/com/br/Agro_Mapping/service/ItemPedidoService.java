@@ -80,4 +80,20 @@ public class ItemPedidoService implements ItemPedidoServiceInterface {
         ItemPedido itemPedidoAtualizado = itemPedidoRepository.save(itemPedido);
         return itemPedidoMapper.toItemPedidoResponseDTO(itemPedidoAtualizado, produtoMapper.toProdutoResponseDTO(produto), usuario.getIdUsuario());  // Passando o idUsuario
     }
+    @Transactional
+    @Override
+    public List<ItemPedidoResponseDTO> listarItemPedidosPorUsuario(UUID usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o ID: " + usuarioId));
+
+        List<ItemPedido> itensPedido = itemPedidoRepository.findByUsuario(usuario);
+
+        return itensPedido.stream()
+                .map(item -> {
+                    Produto produto = item.getProduto();
+                    return itemPedidoMapper.toItemPedidoResponseDTO(item, produtoMapper.toProdutoResponseDTO(produto), usuario.getIdUsuario());
+                })
+                .toList();
+    }
+
 }
