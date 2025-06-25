@@ -6,13 +6,16 @@ services:
     ports:
       - "8090:8090"
     environment:
-      DRIVE_CLASS_NAME: ${DRIVE_CLASS_NAME}
-      URL_BANCO: ${URL_BANCO}
-      USUARIO: ${USUARIO}
-      SENHA: ${SENHA}
+
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
       SECRET_KEY: ${SECRET_KEY}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - agromapping_network
 
@@ -26,6 +29,12 @@ services:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     networks:
       - agromapping_network
 
