@@ -1,0 +1,37 @@
+services:
+  agromapping-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8090"
+    environment:
+      DRIVE_CLASS_NAME: ${DRIVE_CLASS_NAME}
+      URL_BANCO: ${URL_BANCO}
+      USUARIO: ${USUARIO}
+      SENHA: ${SENHA}
+      SECRET_KEY: ${SECRET_KEY}
+    depends_on:
+      - db
+    networks:
+      - agromapping_network
+
+  db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - agromapping_network
+
+volumes:
+  pg_data:
+
+networks:
+  agromapping_network:
+    driver: bridge
