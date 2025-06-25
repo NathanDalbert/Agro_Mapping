@@ -43,4 +43,11 @@ public class ItemPedidoController implements ItemPedidoSwagger {
         itemPedidoServiceInterface.deletarItemPedido(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/usuario/{usuarioId}")
+    public ResponseEntity<List<ItemPedidoResponseDTO>> listarItemPedidosPorUsuario(@PathVariable UUID usuarioId) {
+        List<ItemPedidoResponseDTO> itemPedidos = itemPedidoServiceInterface.listarItemPedidosPorUsuario(usuarioId);
+        return ResponseEntity.ok(itemPedidos);
+    }
+
 }
