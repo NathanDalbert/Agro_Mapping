@@ -74,7 +74,7 @@ public class SecurityConfigurations {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // Adiciona a origem do frontend corretamente
+        configuration.setAllowedOrigins(Arrays.asList("https://agro-mapping-front.vercel.app/")); // Adiciona a origem do frontend corretamente
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Inclui "OPTIONS" para requisição prévia
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept")); // Cabeçalhos permitidos
         configuration.setAllowCredentials(true); // Permite credenciais (cookies, sessões, etc)
