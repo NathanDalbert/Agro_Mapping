@@ -34,16 +34,22 @@ public class Feira {
     @NotNull(message = "A data de funcionamento é obrigatória")
     private LocalDate dataFuncionamento;
 
+    private Double latitude;
+
+    private Double longitude;
+
     @OneToMany(mappedBy = "feira")
     private List<Produto> produtos;
 
-    private Feira(String nome, String localizacao, LocalDate dataFuncionamento) {
+    private Feira(String nome, String localizacao, LocalDate dataFuncionamento, Double latitude, Double longitude) {
         this.nome = nome;
         this.localizacao = localizacao;
         this.dataFuncionamento = dataFuncionamento;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
-    public static Feira newFeira(String nome, String localizacao, LocalDate dataFuncionamento) {
-        return new Feira(nome, localizacao, dataFuncionamento);
+    public static Feira newFeira(String nome, String localizacao, LocalDate dataFuncionamento, Double latitude, Double longitude) {
+        return new Feira(nome, localizacao, dataFuncionamento, latitude, longitude);
     }
 }

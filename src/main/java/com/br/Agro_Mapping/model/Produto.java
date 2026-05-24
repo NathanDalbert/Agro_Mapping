@@ -44,8 +44,7 @@ public class Produto {
     @Size(min = 10, max = 500, message = "A descrição deve ter pelo menos 10 caracteres e no máximo 500 caracteres")
     private String descricao;
 
-    @Column(name = "imagem", nullable = false)
-    @Size(max = 500, message = "O link deve ter no máximo 500 caracteres")
+    @Column(name = "imagem", nullable = false, columnDefinition = "TEXT")
     @NotBlank(message = "Adicione uma imagem ao produto")
     private String imagem;
 

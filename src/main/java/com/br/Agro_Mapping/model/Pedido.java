@@ -1,5 +1,6 @@
 package com.br.Agro_Mapping.model;
 
+import com.br.Agro_Mapping.model.enuns.PedidoStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -34,6 +35,10 @@ public class Pedido {
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private PedidoStatus status = PedidoStatus.PENDENTE;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemPedido> Itempedidos = new ArrayList<>();
