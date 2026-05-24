@@ -1,0 +1,2 @@
+ALTER TABLE produto ALTER COLUMN imagem TYPE TEXT;
+ALTER TABLE produto DROP CONSTRAINT IF EXISTS produto_imagem_check;

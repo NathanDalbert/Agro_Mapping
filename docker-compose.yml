@@ -11,9 +11,9 @@ services:
       - "8090:8090"
     environment:
       # Mapeando as variáveis do seu .env para as que o Spring Boot usa
-      SPRING_DATASOURCE_URL: ${URL_BANCO}
-      SPRING_DATASOURCE_USERNAME: ${USUARIO}
-      SPRING_DATASOURCE_PASSWORD: ${SENHA}
+      URL_BANCO: ${URL_BANCO}
+      USUARIO: ${USUARIO}
+      SENHA: ${SENHA}
       SECRET_KEY: ${SECRET_KEY}
     depends_on:
       db:
@@ -29,7 +29,7 @@ services:
       POSTGRES_USER: ${USUARIO} # Usando a variável USUARIO para criar o usuário no banco
       POSTGRES_PASSWORD: ${SENHA} # Usando a variável SENHA para a senha do banco
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
     healthcheck:
