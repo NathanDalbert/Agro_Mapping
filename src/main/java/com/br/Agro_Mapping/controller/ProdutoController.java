@@ -42,7 +42,7 @@ public class ProdutoController implements ProdutoSwagger {
     }
 
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<ProdutoResponseDTO> atualizarProduto(@PathVariable UUID id,
                                                                @Valid @RequestBody ProdutoRequestDTO produtoRequestDTO) {
         ProdutoResponseDTO produtoAtualizado = produtoServiceInterface.atualizarProduto(id, produtoRequestDTO);

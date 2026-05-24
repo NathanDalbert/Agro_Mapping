@@ -11,6 +11,7 @@ import com.br.Agro_Mapping.model.Usuario;
 import com.br.Agro_Mapping.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ public class UsuarioService implements UsuarioServiceInterface   {
 
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public static boolean isMaiorDe18(LocalDate dataNascimento) {
         LocalDate hoje = LocalDate.now();
@@ -86,7 +88,7 @@ public class UsuarioService implements UsuarioServiceInterface   {
 
         usuario.setNome(usuarioRequestDTO.nome());
         usuario.setEmail(usuarioRequestDTO.email());
-        usuario.setSenha(usuarioRequestDTO.senha());
+        usuario.setSenha(passwordEncoder.encode(usuarioRequestDTO.senha()));
         usuario.setDataDeNascimento(usuarioRequestDTO.dataNascimento());
 
         Usuario usuarioAtualizado = usuarioRepository.save(usuario);

@@ -12,6 +12,7 @@ import com.br.Agro_Mapping.repository.UsuarioRepository;
 import com.br.Agro_Mapping.service.mapper.ContatoServiceMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +25,7 @@ public class ContatoService implements ContatoServiceInterface {
     private final UsuarioRepository usuarioRepository;
     private final ContatoServiceMapper contatoServiceMapper;
 
+    @Transactional
     public ContatoResponseDTO criarContato(ContatoRequestDTO contatoRequestDTO, UUID usuarioId) {
 
         Usuario usuario = usuarioRepository.findById(usuarioId)

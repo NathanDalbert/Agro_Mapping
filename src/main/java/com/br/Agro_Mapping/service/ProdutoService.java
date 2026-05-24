@@ -2,6 +2,7 @@ package com.br.Agro_Mapping.service;
 
 import com.br.Agro_Mapping.dto.request.ProdutoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.ProdutoResponseDTO;
+import com.br.Agro_Mapping.infra.security.AuthenticatedUserProvider;
 import com.br.Agro_Mapping.model.Usuario;
 import com.br.Agro_Mapping.repository.UsuarioRepository;
 import com.br.Agro_Mapping.service.mapper.ProdutoMapper;
@@ -21,11 +22,18 @@ public class ProdutoService implements ProdutoServiceInterface {
     private final ProdutoRepository produtoRepository;
     private final ProdutoMapper produtoMapper;
     private final UsuarioRepository usuarioRepository;
+    private final AuthenticatedUserProvider authUserProvider;
 
     @Transactional
     @Override
     public ProdutoResponseDTO criarProduto(ProdutoRequestDTO produtoRequestDTO, UUID usuarioId) {
-        Usuario usuario= usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        UUID authenticatedId = authUserProvider.getAuthenticatedUserId();
+        if (!authenticatedId.equals(usuarioId)) {
+            throw new RuntimeException("Você só pode criar produtos para sua própria conta.");
+        }
+
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         Produto produto = produtoMapper.toProduto(produtoRequestDTO, usuario);
         produto.setUsuario(usuario);
@@ -45,6 +53,12 @@ public class ProdutoService implements ProdutoServiceInterface {
     @Transactional
     @Override
     public void deletarProduto(UUID id) {
+        Produto produto = produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado."));
+        UUID authenticatedId = authUserProvider.getAuthenticatedUserId();
+        if (!produto.getUsuario().getIdUsuario().equals(authenticatedId)) {
+            throw new RuntimeException("Você não tem permissão para deletar este produto.");
+        }
         produtoRepository.deleteById(id);
     }
 
@@ -53,6 +67,11 @@ public class ProdutoService implements ProdutoServiceInterface {
     public ProdutoResponseDTO atualizarProduto(UUID id, ProdutoRequestDTO produtoRequestDTO) {
         Produto produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado com o ID: " + id));
+
+        UUID authenticatedId = authUserProvider.getAuthenticatedUserId();
+        if (!produto.getUsuario().getIdUsuario().equals(authenticatedId)) {
+            throw new RuntimeException("Você não tem permissão para atualizar este produto.");
+        }
 
         produto.setNome(produtoRequestDTO.nome());
         produto.setCategoria(produtoRequestDTO.categoria());
@@ -67,7 +86,7 @@ public class ProdutoService implements ProdutoServiceInterface {
     @Transactional
     @Override
     public List<ProdutoResponseDTO> findByName(String name) {
-        List<Produto> produtos = produtoRepository.findByNome(name);
+        List<Produto> produtos = produtoRepository.findByNomeContainingIgnoreCase(name);
         return produtos.stream()
                 .map(produtoMapper::toProdutoResponseDTO)
                 .toList();

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -48,5 +49,11 @@ public class PedidoController implements PedidoSwagger {
     public ResponseEntity<List<PedidoResponseDTO>> listarPedidosPorUsuario(@PathVariable UUID idUsuario) {
         List<PedidoResponseDTO> pedidos = pedidoService.listaPedidosPorUsuario(idUsuario);
         return ResponseEntity.ok(pedidos);
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<PedidoResponseDTO> atualizarStatusPedido(@PathVariable UUID id, @RequestBody Map<String, String> body) {
+        PedidoResponseDTO pedido = pedidoService.atualizarStatus(id, body.get("status"));
+        return ResponseEntity.ok(pedido);
     }
 }

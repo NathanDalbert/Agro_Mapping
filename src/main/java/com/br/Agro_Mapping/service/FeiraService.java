@@ -52,6 +52,8 @@ public class FeiraService implements FeiraServiceInterface {
         feira.setNome(feiraRequestDTO.nome());
         feira.setLocalizacao(feiraRequestDTO.localizacao());
         feira.setDataFuncionamento(feiraRequestDTO.dataFuncionamento());
+        feira.setLatitude(feiraRequestDTO.latitude());
+        feira.setLongitude(feiraRequestDTO.longitude());
 
         Feira feiraAtualizada = feiraRepository.save(feira);
         return feiraMapper.toFeiraResponseDTO(feiraAtualizada);

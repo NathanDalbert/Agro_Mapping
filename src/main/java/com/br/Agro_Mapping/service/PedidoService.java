@@ -2,14 +2,17 @@ package com.br.Agro_Mapping.service;
 
 import com.br.Agro_Mapping.dto.request.PedidoRequestDTO;
 import com.br.Agro_Mapping.dto.responses.PedidoResponseDTO;
+import com.br.Agro_Mapping.infra.security.AuthenticatedUserProvider;
 import com.br.Agro_Mapping.model.Estoque;
 import com.br.Agro_Mapping.model.ItemPedido;
+import com.br.Agro_Mapping.model.Pedido;
 import com.br.Agro_Mapping.model.Usuario;
+import com.br.Agro_Mapping.model.enuns.PedidoStatus;
+import com.br.Agro_Mapping.exceptions.PedidoNotFoundException;
 import com.br.Agro_Mapping.repository.EstoqueRepository;
 import com.br.Agro_Mapping.repository.ItemPedidoRepository;
 import com.br.Agro_Mapping.repository.UsuarioRepository;
 import com.br.Agro_Mapping.service.mapper.PedidoMapper;
-import com.br.Agro_Mapping.model.Pedido;
 import com.br.Agro_Mapping.repository.PedidoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,20 +25,20 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PedidoService implements PedidoServiceInterface {
 
-    private  final ItemPedidoRepository itemPedidoRepository;
-
+    private final ItemPedidoRepository itemPedidoRepository;
     private final PedidoRepository pedidoRepository;
-
     private final UsuarioRepository usuarioRepository;
-
     private final PedidoMapper pedidoMapper;
-
     private final EstoqueRepository estoqueRepository;
-
+    private final AuthenticatedUserProvider authUserProvider;
 
     @Transactional
-
     public PedidoResponseDTO criarPedido(PedidoRequestDTO pedidoRequestDTO) {
+        UUID authenticatedId = authUserProvider.getAuthenticatedUserId();
+        if (!authenticatedId.equals(pedidoRequestDTO.idUsuario())) {
+            throw new RuntimeException("Você só pode criar pedidos para sua própria conta.");
+        }
+
         Usuario usuario = usuarioRepository.findById(pedidoRequestDTO.idUsuario())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o ID: " + pedidoRequestDTO.idUsuario()));
 
@@ -52,7 +55,6 @@ public class PedidoService implements PedidoServiceInterface {
             }
 
             estoque.setQuantidadeDisponivel(estoque.getQuantidadeDisponivel() - item.getQuantidade());
-
             itemPedidoRepository.save(item);
             estoqueRepository.save(estoque);
         }
@@ -61,7 +63,6 @@ public class PedidoService implements PedidoServiceInterface {
     }
 
     @Transactional(readOnly = true)
-
     public List<PedidoResponseDTO> listaPedidos() {
         List<Pedido> pedidos = pedidoRepository.findAll();
         return pedidos.stream()
@@ -70,28 +71,61 @@ public class PedidoService implements PedidoServiceInterface {
     }
 
     @Transactional
-
     public void deletarPedido(UUID id) {
+        Pedido pedido = pedidoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado."));
+        UUID authenticatedId = authUserProvider.getAuthenticatedUserId();
+        if (!pedido.getUsuario().getIdUsuario().equals(authenticatedId)) {
+            throw new RuntimeException("Você não tem permissão para deletar este pedido.");
+        }
         pedidoRepository.deleteById(id);
     }
 
     @Transactional
-
     public PedidoResponseDTO atualizarPedido(UUID id, PedidoRequestDTO pedidoRequestDTO) {
         Pedido pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado com o ID: " + id));
+        UUID authenticatedId = authUserProvider.getAuthenticatedUserId();
+        if (!pedido.getUsuario().getIdUsuario().equals(authenticatedId)) {
+            throw new RuntimeException("Você não tem permissão para atualizar este pedido.");
+        }
         pedido.setDataPedido(pedidoRequestDTO.dataPedido());
         Pedido pedidoAtualizado = pedidoRepository.save(pedido);
-
         return pedidoMapper.toPedidoResponseDTO(pedidoAtualizado);
     }
+
     @Transactional
     public List<PedidoResponseDTO> listaPedidosPorUsuario(UUID idUsuario) {
+        UUID authenticatedId = authUserProvider.getAuthenticatedUserId();
+        if (!authenticatedId.equals(idUsuario)) {
+            throw new RuntimeException("Você só pode visualizar seus próprios pedidos.");
+        }
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-
         return pedidoRepository.findByUsuario(usuario).stream()
                 .map(pedidoMapper::toPedidoResponseDTO)
                 .toList();
+    }
+
+    @Transactional
+    public PedidoResponseDTO atualizarStatus(UUID id, String statusStr) {
+        Pedido pedido = pedidoRepository.findById(id)
+                .orElseThrow(() -> new PedidoNotFoundException(id));
+        PedidoStatus novoStatus = PedidoStatus.valueOf(statusStr);
+        pedido.setStatus(novoStatus);
+
+        // Se cancelado, restaurar estoque
+        if (novoStatus == PedidoStatus.CANCELADO && pedido.getItempedidos() != null) {
+            for (ItemPedido item : pedido.getItempedidos()) {
+                Estoque estoque = item.getProduto().getEstoque();
+                if (estoque != null) {
+                    estoque.setQuantidadeDisponivel(estoque.getQuantidadeDisponivel() + item.getQuantidade());
+                    estoqueRepository.save(estoque);
+                }
+            }
+        }
+
+        Pedido pedidoAtualizado = pedidoRepository.save(pedido);
+        return pedidoMapper.toPedidoResponseDTO(pedidoAtualizado);
     }
 }
