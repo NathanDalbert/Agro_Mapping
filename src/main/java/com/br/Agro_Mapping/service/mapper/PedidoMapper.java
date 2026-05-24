@@ -54,6 +54,7 @@ public class PedidoMapper {
                 pedido.getIdPedido(),
                 pedido.getDataPedido(),
                 pedido.getValorTotal(),
+                pedido.getStatus().name(),
                 usuarioMapper.toUsuarioResponseDTO(pedido.getUsuario()),
                 itens
         );

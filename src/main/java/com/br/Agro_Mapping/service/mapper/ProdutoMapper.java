@@ -40,6 +40,7 @@ public class ProdutoMapper {
                 produto.getPreco(),
                 produto.getDescricao(),
                 produto.getImagem(),
+                produto.getUsuario() != null ? produto.getUsuario().getIdUsuario() : null,
                 estoqueResponseDTO
         );
     }

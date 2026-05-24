@@ -13,7 +13,9 @@ public class FeiraServiceMapper {
         return Feira.newFeira(
                 dto.nome(),
                 dto.localizacao(),
-                dto.dataFuncionamento()
+                dto.dataFuncionamento(),
+                dto.latitude(),
+                dto.longitude()
         );
     }
 
@@ -22,7 +24,9 @@ public class FeiraServiceMapper {
                 feira.getIdFeira(),
                 feira.getNome(),
                 feira.getLocalizacao(),
-                feira.getDataFuncionamento()
+                feira.getDataFuncionamento(),
+                feira.getLatitude(),
+                feira.getLongitude()
         );
     }
 }

@@ -8,6 +8,7 @@ public record ProdutoResponseDTO(UUID id,
                                  double preco,
                                  String descricao,
                                  String imagem,
+                                 UUID usuarioId,
                                  EstoqueResponseDTO estoque) {
 
 }
