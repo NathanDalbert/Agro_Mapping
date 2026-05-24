@@ -32,6 +32,54 @@ public class RestExceptionHandler {
         return buildErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST, request);
     }
 
+    // Handler para ContatoNotFoundException
+    @ExceptionHandler(ContatoNotFoundException.class)
+    public ResponseEntity<Object> handleContatoNotFoundException(ContatoNotFoundException ex, WebRequest request) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND, request);
+    }
+
+    // Handler para ProdutoNotFoundException
+    @ExceptionHandler(ProdutoNotFoundException.class)
+    public ResponseEntity<Object> handleProdutoNotFoundException(ProdutoNotFoundException ex, WebRequest request) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND, request);
+    }
+
+    // Handler para PedidoNotFoundException
+    @ExceptionHandler(PedidoNotFoundException.class)
+    public ResponseEntity<Object> handlePedidoNotFoundException(PedidoNotFoundException ex, WebRequest request) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND, request);
+    }
+
+    // Handler para EstoqueNotFoundException
+    @ExceptionHandler(EstoqueNotFoundException.class)
+    public ResponseEntity<Object> handleEstoqueNotFoundException(EstoqueNotFoundException ex, WebRequest request) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND, request);
+    }
+
+    // Handler para FeiraNotFoundException
+    @ExceptionHandler(FeiraNotFoundException.class)
+    public ResponseEntity<Object> handleFeiraNotFoundException(FeiraNotFoundException ex, WebRequest request) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND, request);
+    }
+
+    // Handler para EstoqueInsuficienteException
+    @ExceptionHandler(EstoqueInsuficienteException.class)
+    public ResponseEntity<Object> handleEstoqueInsuficienteException(EstoqueInsuficienteException ex, WebRequest request) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.CONFLICT, request);
+    }
+
+    // Handler para UnauthorizedOperationException
+    @ExceptionHandler(UnauthorizedOperationException.class)
+    public ResponseEntity<Object> handleUnauthorizedOperationException(UnauthorizedOperationException ex, WebRequest request) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.FORBIDDEN, request);
+    }
+
+    // Handler genérico para RuntimeException
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Object> handleRuntimeException(RuntimeException ex, WebRequest request) {
+        return buildErrorResponse("Erro interno no servidor", HttpStatus.INTERNAL_SERVER_ERROR, request);
+    }
+
 
     // Método genérico para construir respostas de erro
     private ResponseEntity<Object> buildErrorResponse(String message, HttpStatus status, WebRequest request) {

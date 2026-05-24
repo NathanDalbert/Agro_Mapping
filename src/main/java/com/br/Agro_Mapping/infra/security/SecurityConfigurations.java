@@ -25,37 +25,42 @@ import java.util.Arrays;
 public class SecurityConfigurations {
 
     private final SecurityFilter securityFilter;
+    private final SecurityHeadersFilter securityHeadersFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable()) // Desabilita CSRF
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/contato").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/contato").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/contato").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/contato/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/contato/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/produto").hasRole("SELLER")
-                        .requestMatchers(HttpMethod.POST, "/pedido").hasRole("USER")
-                        .requestMatchers(HttpMethod.POST, "/pedido").hasRole("SELLER")
-                        .requestMatchers(HttpMethod.POST, "/itemPedido").hasRole("USER")
-                        .requestMatchers(HttpMethod.POST, "/itemPedido").hasRole("SELLER")
+                        .requestMatchers(HttpMethod.POST, "/pedido").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/itemPedido").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/produto/**").hasRole("SELLER")
-                        .requestMatchers(HttpMethod.GET, "/usuario/**").hasRole("USER")
-                        .requestMatchers(HttpMethod.GET, "/usuario/**").hasRole("SELLER")
                         .requestMatchers(HttpMethod.DELETE, "/produto/**").hasRole("SELLER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/usuario/**").hasRole("USER")
-                        .requestMatchers("/contato").permitAll()
                         .requestMatchers(HttpMethod.GET, "/produto/buscarProdutoPorNome/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/produto/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/feiras").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/pedido").hasRole("SELLER")
-                        .requestMatchers(HttpMethod.GET, "/pedido").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/feiras/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/feiras/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/feiras/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/pedido/**").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/pedido/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/estoque/**").authenticated()
+                        .requestMatchers("/usuario/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/feiras").hasRole("ADMIN")
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Acesso ao Swagger
-                        .anyRequest().authenticated()) // Qualquer outra requisição requer autenticação
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class) // Filtro de segurança
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .anyRequest().authenticated())
+                .addFilterBefore(securityHeadersFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .build();
     }
@@ -74,8 +79,18 @@ public class SecurityConfigurations {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // Adiciona a origem do frontend corretamente
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Inclui "OPTIONS" para requisição prévia
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:5173",
+                "http://localhost:5174",
+                "http://localhost:3000",
+                "http://localhost:9090",
+                "http://localhost:8080",
+                "http://127.0.0.1:5173",
+                "http://127.0.0.1:5174",
+                "http://127.0.0.1:9090",
+                "http://127.0.0.1:8080"
+        ));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept")); // Cabeçalhos permitidos
         configuration.setAllowCredentials(true); // Permite credenciais (cookies, sessões, etc)
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

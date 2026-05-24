@@ -44,7 +44,6 @@ public class TokenService {
                     .verify(token);
             return decodedJWT.getSubject(); // Retorna o email do usuário
         } catch (JWTVerificationException e) {
-            System.out.println("Erro ao validar o token: " + e.getMessage());
             return null;
         }
     }
